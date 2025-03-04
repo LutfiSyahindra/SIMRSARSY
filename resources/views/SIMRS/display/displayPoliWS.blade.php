@@ -5,6 +5,26 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Display Antrian</title>
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="{{ asset("dist/assets/images/favicon.ico") }}">
+
+        <!-- Daterangepicker css -->
+        <link rel="stylesheet" href="{{ asset("dist/assets/vendor/daterangepicker/daterangepicker.css") }}">
+
+        <!-- Vector Map css -->
+        <link rel="stylesheet"
+            href="{{ asset("dist/assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css") }}">
+
+        <!-- Theme Config Js -->
+        <script src="{{ asset("dist/assets/js/config.js") }}"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- App css -->
+        <link href="{{ asset("dist/assets/css/app.min.css") }}" rel="stylesheet" type="text/css" id="app-style" />
+
+        <!-- Icons css -->
+        <link href="{{ asset("dist/assets/css/icons.min.css") }}" rel="stylesheet" type="text/css" />
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <style>
             body {
@@ -140,6 +160,11 @@
     <body>
         <!-- Header -->
         <div class="header">
+            <li class="d-none d-md-inline-block">
+                <a class="nav-link" href="" data-toggle="fullscreen">
+                    <i class="ri-fullscreen-line fs-22"></i>
+                </a>
+            </li>
             <img src="{{ asset("img/logoarsy.png") }}" alt="Logo RS" class="logo">
             <div class="header-text">
                 <h1>ANTRIAN POLIKLINIK</h1>
@@ -175,6 +200,22 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://js.pusher.com/8.0/pusher.min.js"></script>
+        <!-- Vendor js -->
+        <script src="{{ asset("dist/assets/js/vendor.min.js") }}"></script>
+
+        <!-- Daterangepicker js -->
+        <script src="{{ asset("dist/assets/vendor/daterangepicker/moment.min.js") }}"></script>
+        <script src="{{ asset("dist/assets/vendor/daterangepicker/daterangepicker.js") }}"></script>
+        <!-- Vector Map js -->
+        <script src="{{ asset("dist/assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js") }}">
+        </script>
+        <script
+            src="{{ asset("dist/assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js") }}">
+        </script>
+
+        <!-- App js -->
+        <script src="{{ asset("dist/assets/js/app.min.js") }}"></script>
+
         <script>
             $(document).ready(function() {
                 const pusher = new Pusher("{{ env("PUSHER_APP_KEY") }}", {
@@ -354,7 +395,7 @@
 
                     container.html(serviceBoxes);
 
-                    if (serviceMap.size >= 5) {
+                    if (serviceMap.size >= 3) {
                         container.addClass("scroll-active");
                     } else {
                         container.removeClass("scroll-active");
