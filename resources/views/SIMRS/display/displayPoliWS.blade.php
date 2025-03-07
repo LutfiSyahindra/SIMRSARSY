@@ -161,9 +161,9 @@
         <!-- Header -->
         <div class="header">
             <li class="d-none d-md-inline-block">
-                <a class="nav-link" href="" data-toggle="fullscreen">
+                <button class="nav-link btn btn-primary" id="fullscreen-btn">
                     <i class="ri-fullscreen-line fs-22"></i>
-                </a>
+                </button>
             </li>
             <img src="{{ asset("img/logoarsy.png") }}" alt="Logo RS" class="logo">
             <div class="header-text">
@@ -222,6 +222,15 @@
                     cluster: "{{ env("PUSHER_APP_CLUSTER") }}",
                     forceTLS: true
                 });
+
+                document.getElementById('fullscreen-btn').addEventListener('click', function() {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen();
+                    } else {
+                        document.exitFullscreen();
+                    }
+                });
+
 
                 // Subscribe ke channel
                 const channel = pusher.subscribe("panggilan-pasien");

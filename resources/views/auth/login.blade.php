@@ -71,10 +71,12 @@
                     <!-- Logo -->
                     <div class="auth-brand text-center text-lg-start">
                         <a href="index.html" class="logo-dark">
-                            <span><img src="{{asset('dist/assets/images/logo-dark.png')}}" alt="dark logo" height="24"></span>
+                            <span><img src="{{ asset("dist/assets/images/logo-dark.png") }}" alt="dark logo"
+                                    height="24"></span>
                         </a>
                         <a href="index.html" class="logo-light">
-                            <span><img src="{{asset('dist/assets/images/logo.png')}}" alt="logo" height="24"></span>
+                            <span><img src="{{ asset("dist/assets/images/logo.png") }}" alt="logo"
+                                    height="24"></span>
                         </a>
                     </div>
 
@@ -87,11 +89,11 @@
                         <form method="POST" action="{{ route("login") }}">
                             @csrf
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email address</label>
-                                <input class="form-control" type="email" id="email" name="email"
-                                    value="{{ old("email") }}" required autofocus autocomplete="username"
-                                    placeholder="Enter your email">
-                                @error("email")
+                                <label for="name" class="form-label">Username</label>
+                                <input class="form-control" type="text" id="name" name="name"
+                                    value="{{ old("name") }}" required autofocus autocomplete="username"
+                                    placeholder="Enter your username">
+                                @error("name")
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -113,13 +115,8 @@
                                 <button class="btn btn-primary" type="submit"><i class="ri-login-box-line"></i> Log
                                     In</button>
                             </div>
-                            <div class="text-center mt-4">
-                                @if (Route::has("password.request"))
-                                    <a href="{{ route("password.request") }}" class="text-muted"><small>Forgot your
-                                            password?</small></a>
-                                @endif
-                            </div>
                         </form>
+
                         <!-- end form-->
                     </div>
 
