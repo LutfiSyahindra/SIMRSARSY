@@ -34,14 +34,14 @@
     <div class="h-100" id="leftside-menu-container" data-simplebar>
         <!-- Leftbar User -->
         <div class="leftbar-user p-3 text-white">
-            <a href="pages-profile.html" class="d-flex align-items-center text-reset">
+            <a href="" class="d-flex align-items-center text-reset">
                 <div class="flex-shrink-0">
                     <img src="{{ asset("dist/assets/images/users/avatar-1.jpg") }}" alt="user-image" height="42"
                         class="rounded-circle shadow">
                 </div>
                 <div class="flex-grow-1 ms-2">
-                    <span class="fw-semibold fs-15 d-block">Doris Larson</span>
-                    <span class="fs-13">Founder</span>
+                    <span class="fw-semibold fs-15 d-block">{{ Auth::user()->name }}</span>
+                    <span class="fs-13">{{ Auth::user()->role ?? "User" }}</span>
                 </div>
                 <div class="ms-auto">
                     <i class="ri-arrow-right-s-fill fs-20"></i>
@@ -100,6 +100,9 @@
                         </li>
                         <li>
                             <a href="/simrs/display/poliws">PoliWS</a>
+                        </li>
+                        <li>
+                            <a href="/simrs/display/apotek">Apotek</a>
                         </li>
                     </ul>
                 </div>

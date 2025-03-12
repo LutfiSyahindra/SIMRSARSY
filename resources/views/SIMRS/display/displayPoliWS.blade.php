@@ -59,6 +59,22 @@
                 display: inline-block;
             }
 
+            .fullscreen-btn {
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                /* Geser ke kanan atas */
+                background-color: #097c99;
+                border: none;
+                padding: 8px 12px;
+                cursor: pointer;
+            }
+
+            .fullscreen-btn i {
+                font-size: 60px;
+                color: white;
+            }
+
             .container {
                 flex-grow: 1;
                 display: flex;
@@ -160,16 +176,17 @@
     <body>
         <!-- Header -->
         <div class="header">
-            <li class="d-none d-md-inline-block">
-                <button class="nav-link btn btn-primary" id="fullscreen-btn">
-                    <i class="ri-fullscreen-line fs-22"></i>
-                </button>
-            </li>
             <img src="{{ asset("img/logoarsy.png") }}" alt="Logo RS" class="logo">
+
             <div class="header-text">
-                <h1>ANTRIAN POLIKLINIK</h1>
+                <h1>ANTRIAN POLIKLNIK RAWAT JALAN</h1>
                 <h3>RS ABDURRAHMAN SYAMSYURI</h3>
             </div>
+
+            <!-- Tombol Fullscreen -->
+            <button class="fullscreen-btn btn btn-primary" id="fullscreen-btn">
+                <i class="ri-fullscreen-line fs-22"></i>
+            </button>
         </div>
 
         <!-- Container -->

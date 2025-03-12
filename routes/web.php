@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\simrs\display\apotekwsController;
 use App\Http\Controllers\simrs\display\PoliController;
 use App\Http\Controllers\simrs\display\PoliWsController;
 use App\Http\Controllers\simrs\PetugasPanggil\poliPanggilController;
@@ -19,10 +20,18 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
 
     Route::prefix('simrs')->group(function () {
+        // Display Poli
         Route::get('/display/poli', [PoliController::class, 'index'])->name('display.poli');
         Route::get('/display/poli/data', [PoliController::class, 'data'])->name('display.poli.data');
         Route::get('/display/poli/lastdata', [PoliController::class, 'lastdata'])->name('display.poli.lastdata');
         Route::get('/display/poliws', [PoliWsController::class, 'index'])->name('display.poliws');
+
+        // Display Apotek
+        Route::get('/display/apotek', [apotekwsController::class, 'index'])->name('display.apotek');
+        Route::get('/display/panggil-apotek', [apotekwsController::class, 'panggilAntrean'])->name('display.panggilapotek');
+        Route::put('/display/update-apotek', [apotekwsController::class, 'updateAntrean'])->name('display.updateapotek');
+        Route::get('/display/nonracikan', [apotekwsController::class, 'dataNonracikan'])->name('display.nonracikan');
+        Route::get('/display/racikan', [apotekwsController::class, 'dataracikan'])->name('display.racikan');
 
         // petugasPanggil
         Route::get('/petugasPanggil/poliPanggil', [poliPanggilController::class, 'index'])->name('petugasPanggil.poliPanggil');
