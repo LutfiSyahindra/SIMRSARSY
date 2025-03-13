@@ -5,6 +5,7 @@ namespace App\Http\Controllers\simrs\Users;
 use App\Http\Controllers\Controller;
 use App\Services\Users\rolesService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class rolesController extends Controller
@@ -62,7 +63,28 @@ class rolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+        ]);
+
+        // Jika validasi gagal
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        // Simpan data ke database dengan password yang di-hash
+        $this->rolesService->createRoles(
+            $request->name,
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Roles Created successful!',
+        ], 201);
     }
 
     /**
@@ -78,7 +100,8 @@ class rolesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $roles = $this->rolesService->findRoles($id);
+        return response()->json($roles);
     }
 
     /**

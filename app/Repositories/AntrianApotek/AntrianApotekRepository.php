@@ -15,6 +15,7 @@ class AntrianApotekRepository
             ->addSelect([
                 'antriapotek3.panggil',  // Gunakan prefix tabel
                 'antriapotek3.no_rawat', // Gunakan prefix tabel
+                DB::raw("RIGHT(antriapotek3.no_resep, 3) AS no_resep"),
                 'pasien.nm_pasien',
                 'poliklinik.nm_poli',
                 'dokter.nm_dokter',
@@ -41,7 +42,7 @@ class AntrianApotekRepository
         $today = Carbon::now()->toDateString();
 
         return resepObatModel::select(
-            'resep_obat.no_resep', 
+            DB::raw("RIGHT(resep_obat.no_resep, 3) AS no_resep"),
             'resep_obat.no_rawat', 
             'resep_obat.tgl_perawatan',
             'pasien.nm_pasien',
@@ -71,7 +72,7 @@ class AntrianApotekRepository
         $today = Carbon::now()->toDateString();
 
         return resepObatModel::select(
-            'resep_obat.no_resep', 
+            DB::raw("RIGHT(resep_obat.no_resep, 3) AS no_resep"),
             'resep_obat.no_rawat', 
             'resep_obat.tgl_perawatan',
             'pasien.nm_pasien',

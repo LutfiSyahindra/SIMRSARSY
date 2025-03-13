@@ -158,13 +158,14 @@
                 color: white;
                 padding: 10px;
                 text-align: center;
-                font-size: 20px;
+                font-size: 25px;
             }
 
             tbody td {
                 padding: 10px;
                 text-align: center;
                 font-weight: bold;
+                font-size: 25px;
             }
 
             .queue-box .number {
@@ -362,7 +363,7 @@
 
                                 if (lastDisplayedPatient !== formattedName) {
                                     $(".queue-box .number").text(formattedName);
-                                    $(".queue-box .name").text(data.no_rawat);
+                                    $(".queue-box .name").text(data.no_resep + " - " + data.no_rawat);
                                     lastDisplayedPatient = formattedName;
                                 }
 
@@ -375,7 +376,36 @@
 
                     // Memanggil pasien dengan suara
                     function callPatient(name, number, panggil) {
-                        let text = `Pasien atas nama ${name}, silakan menuju loket pengambilan obat.`;
+                        let modifiedName = name;
+
+                        // Cek apakah ada koma dalam nama (misalnya "Siti,Ny")
+                        if (name.includes(",")) {
+                            let parts = name.split(",").map(part => part.trim()); // Pisahkan dan hapus spasi ekstra
+                            let title = "";
+                            let realName = "";
+
+                            // Cek apakah salah satu bagian adalah gelar yang harus dipindahkan ke depan
+                            parts.forEach(part => {
+                                if (/^Ny$/i.test(part)) title = "Nyonya";
+                                else if (/^Tn$/i.test(part)) title = "Tuan";
+                                else if (/^An$/i.test(part)) title = "Anak";
+                                else realName = part; // Jika bukan gelar, anggap sebagai nama asli
+                            });
+
+                            // Jika ada gelar, format ulang namanya
+                            if (title && realName) {
+                                modifiedName = `${title} ${realName}`;
+                            }
+                        } else {
+                            // Format nama biasa (jika tidak ada koma)
+                            modifiedName = name
+                                .replace(/^Ny\b/i, "Nyonya")
+                                .replace(/^An\b/i, "Anak")
+                                .replace(/^Nn\b/i, "Nona")
+                                .replace(/^Tn\b/i, "Tuan");
+                        }
+
+                        let text = `Pasien atas nama ${modifiedName}, silakan menuju loket pengambilan obat.`;
                         let bellSound = new Audio(
                             "{{ asset("plugins/audio/Airport_Bell.mp3") }}"); // Ganti dengan path suara bel
 
@@ -452,7 +482,7 @@
 
                             batch.forEach(item => {
                                 let row = `<tr style="display: none;">
-                                    <td>${item.no_rawat}</td>
+                                    <td>${item.no_resep}</td>
                                     <td>${item.nm_pasien}</td>
                                     <td>${item.status}</td>
                                 </tr>`;
