@@ -364,7 +364,7 @@
                         let formattedDokter = formatPronunciation(dokter);
                         let formattedPasien = formatPatientName(pasien);
                         let text =
-                            `Pasien atas nama: ${formattedPasien}, Silahkan ke Loket P I Pepe`;
+                            `Pasien atas nama: ${formattedPasien}, Silahkan ke Loket P iPepe`;
                         let speech = new SpeechSynthesisUtterance(text);
                         speech.lang = "id-ID";
                         speech.rate = 0.8;
