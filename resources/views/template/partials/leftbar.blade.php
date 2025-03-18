@@ -102,7 +102,13 @@
                             <a href="/simrs/display/poliws">PoliWS</a>
                         </li>
                         <li>
+                            <a href="/simrs/display/pipp">PIPP</a>
+                        </li>
+                        <li>
                             <a href="/simrs/display/apotek">Apotek</a>
+                        </li>
+                        <li>
+                            <a href="/simrs/anjungan/index">Anjungan</a>
                         </li>
                     </ul>
                 </div>
@@ -120,6 +126,9 @@
                     <ul class="side-nav-second-level">
                         <li>
                             <a href="/simrs/petugasPanggil/poliPanggil">Poli</a>
+                        </li>
+                        <li>
+                            <a href="/simrs/petugasPanggil/pipp/pippPanggil">PIPP</a>
                         </li>
                     </ul>
                 </div>

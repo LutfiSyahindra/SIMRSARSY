@@ -1,13 +1,28 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\simrs\Anjungan\admisiController;
+use App\Http\Controllers\simrs\Anjungan\AnjunganController;
+use App\Http\Controllers\simrs\Anjungan\antrianFarmasiController;
 use App\Http\Controllers\simrs\display\apotekwsController;
+use App\Http\Controllers\simrs\display\PippController;
 use App\Http\Controllers\simrs\display\PoliController;
 use App\Http\Controllers\simrs\display\PoliWsController;
+use App\Http\Controllers\simrs\PetugasPanggil\pippPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\poliPanggilController;
 use App\Http\Controllers\simrs\Users\rolesController;
 use App\Http\Controllers\simrs\Users\UsersController;
 use Illuminate\Support\Facades\Route;
+
+
+    // Anjungan
+    Route::get('simrs/anjungan/index', [AnjunganController::class, 'index'])->name('anjungan.index');
+    // Admisi
+    Route::post('simrs/anjungan/admisi/generateNoAntrian', [admisiController::class, 'generateAntrianAdmisi'])->name('anjungan.admisi.generateNoAntrian');        
+    Route::get('simrs/anjungan/admisi/cetakAntrian/{nomor}', [admisiController::class, 'cetakAntrian'])->name('anjungan.admisi.cetakAntrian');
+    // Antrian Farmasi
+    Route::post('simrs/anjungan/antrianFarmasi/generateNoAntrianFarmasi', [antrianFarmasiController::class, 'generateAntrian'])->name('anjungan.antrianFarmasi.generateAntrian');
+    Route::get('simrs/anjungan/antriFarmasi/cetakAntrian/{nomor}', [antrianFarmasiController::class, 'cetakAntrian'])->name('anjungan.antrianFarmasi.cetakAntrian');        
 
 Route::get('/', function () {
     return view('auth.login');
@@ -33,12 +48,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/display/nonracikan', [apotekwsController::class, 'dataNonracikan'])->name('display.nonracikan');
         Route::get('/display/racikan', [apotekwsController::class, 'dataracikan'])->name('display.racikan');
 
-        // petugasPanggil
+        // petugasPanggilPoli
         Route::get('/petugasPanggil/poliPanggil', [poliPanggilController::class, 'index'])->name('petugasPanggil.poliPanggil');
         Route::get('/petugasPanggil/getPoli', [poliPanggilController::class, 'getDataPoli'])->name('petugasPanggil.getPoli');
         Route::get('/petugasPanggil/getPasien', [poliPanggilController::class, 'getDataPasien'])->name('petugasPanggil.getPasien');
         Route::get('/petugasPanggil/getDokter', [poliPanggilController::class, 'getDataDokter'])->name('petugasPanggil.getDokter');
         Route::post('/petugasPanggil/panggilPasien', [poliPanggilController::class, 'panggilPasien'])->name('petugasPanggil.panggilPasien');
+
+        // Display PIPP
+        Route::get('/display/pipp', [PippController::class, 'index'])->name('display.pipp');
+
+        // Petugas Panggil Pipp
+        Route::get('/petugasPanggil/pipp/pippPanggil', [pippPanggilController::class, 'index'])->name('petugasPanggil.pipp.pippPanggil');
+        Route::get('/petugasPanggil/pipp/pippPanggil/dataPasien', [pippPanggilController::class, 'getDataPasien'])->name('petugasPanggil.pipp.pippPanggil.dataPasien');
+        Route::post('/petugasPanggil/pipp/pippPanggil/panggilPipp', [pippPanggilController::class, 'panggilPipp'])->name('petugasPanggil.pipp.pippPanggil.panggilPipp');
 
         // Users
         Route::get('/users/index', [UsersController::class, 'index'])->name('users.index');

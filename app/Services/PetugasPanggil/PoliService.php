@@ -27,4 +27,9 @@ class PoliService
         return $this->poliRepository->getDokter($kd_poli);
     }
 
+    public function getDataPasien()
+    {
+        return $this->poliRepository->getDataPasien();
+    }
+
 }
