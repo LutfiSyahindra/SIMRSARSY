@@ -70,3 +70,5 @@
 
 <!-- Script jQuery & AJAX -->
 @include("SIMRS.anjungan.antrianFarmasi.js")
+
+{{-- tes --}}
