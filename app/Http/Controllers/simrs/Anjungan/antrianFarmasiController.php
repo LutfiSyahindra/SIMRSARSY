@@ -48,15 +48,13 @@ class antrianFarmasiController extends Controller
     {
         // Ambil data berdasarkan no_resep dan konversi ke array
         $dataAntrian = $this->antrianFarmasiService->generateDataFarmasi($no_resep)->toArray();
+        
 
         // Pastikan data tidak kosong dan ambil elemen pertama
         if (empty($dataAntrian)) {
             return abort(404, "Data tidak ditemukan");
         }
         $dataAntrian = $dataAntrian[0]; // Ambil elemen pertama dari array
-
-        $customPaper = [0, 0, 226, 100]; // Lebih ringkas
-
 
         $pdf = Pdf::loadView('SIMRS.anjungan.antrianFarmasi.pdfAntrianAnjunganFarmasi', [
             'no_resep' => $dataAntrian['no_resep'],
@@ -66,7 +64,7 @@ class antrianFarmasiController extends Controller
             'jam_peresepan' => $dataAntrian['jam_peresepan'] ?? 'Tidak Diketahui',
             'jam_penyerahan' => $dataAntrian['jam_penyerahan'] ?? 'Tidak Diketahui',
             'obat' => json_decode($dataAntrian['detail_obat'] ?? '[]', true) // Jika detail_obat berbentuk JSON
-        ])->setPaper($customPaper, 'portrait');
+        ])->setPaper([0, 0, 226.77, 1000], 'portrait');
 
         return $pdf->stream("Antrian_{$dataAntrian['no_resep']}.pdf");
     }

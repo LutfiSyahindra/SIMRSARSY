@@ -7,8 +7,8 @@
         <title>Cetak Antrian</title>
         <style>
             @page {
-                size: 80mm 70mm;
-                margin: 5px;
+                size: 80mm auto;
+                margin: 0;
             }
 
             body {
@@ -20,14 +20,16 @@
             }
 
             .container {
-                width: 100%;
-                padding: 5px 0;
+                width: 80mm;
+                padding: 5px;
+                margin: 0 auto;
+                box-sizing: border-box;
             }
 
             h3 {
-                margin: 5px 0;
                 font-size: 18px;
                 font-weight: bold;
+                margin-bottom: 3px;
             }
 
             h4 {
@@ -41,18 +43,23 @@
             }
 
             .nomor-antrian {
-                font-size: 28px;
+                font-size: 30px;
                 font-weight: bold;
                 margin: 10px 0;
                 border: 2px solid black;
                 display: inline-block;
-                padding: 5px 10px;
+                padding: 8px 12px;
                 border-radius: 5px;
             }
 
             .divider {
                 border-top: 1px dashed black;
-                margin: 8px 0;
+                margin: 5px 0;
+            }
+
+            .footer {
+                font-size: 12px;
+                margin-top: 5px;
             }
 
             .page-break {
@@ -65,20 +72,33 @@
         <div class="container">
             <h3>FASKES TINGKAT LANJUT</h3>
             <h4>RS ARSY PACIRAN</h4>
-            <p><strong>{{ $tgl_peresepan }}</strong> | <strong>{{ $jam_peresepan }}</strong></p>
+            <div class="divider"></div>
+            <p><strong>Tanggal:</strong> {{ $tgl_peresepan }}</p>
+            <p><strong>Jam:</strong> {{ $jam_peresepan }}</p>
             <div class="nomor-antrian">{{ $nomor }}</div>
             <h4>ANTRIAN FARMASI RAWAT JALAN</h4>
+            <div class="divider"></div>
+            <p class="footer">Silakan menunggu panggilan.</p>
         </div>
 
-        <div class="page-break"></div> <!-- Halaman Baru -->
+        <div class="page-break"></div>
 
         <div class="container">
             <h3>FASKES TINGKAT LANJUT</h3>
             <h4>RS ARSY PACIRAN</h4>
-            <p><strong>{{ $tgl_peresepan }}</strong> | <strong>{{ $jam_peresepan }}</strong></p>
+            <div class="divider"></div>
+            <p><strong>Tanggal:</strong> {{ $tgl_peresepan }}</p>
+            <p><strong>Jam:</strong> {{ $jam_peresepan }}</p>
             <div class="nomor-antrian">{{ $nomor }}</div>
             <h4>ANTRIAN FARMASI RAWAT JALAN</h4>
+            <div class="divider"></div>
+            <p class="footer">Silakan menunggu panggilan.</p>
         </div>
+        <script>
+            window.onload = function() {
+                window.print();
+            };
+        </script>
     </body>
 
 </html>
