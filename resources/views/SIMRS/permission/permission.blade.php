@@ -6,16 +6,15 @@
 @endsection
 
 @section("content")
-    @include("SIMRS.roles.modal")
-    @include("SIMRS.roles.assignModal")
+    @include("SIMRS.permission.modal")
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box justify-content-between d-flex align-items-md-center flex-md-row flex-column">
-                <h4 class="page-title">Roles</h4>
+                <h4 class="page-title">Permissions</h4>
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Roles</a></li>
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Data Roles</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Permissions</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Data Permissions</a></li>
                 </ol>
             </div>
         </div>
@@ -33,14 +32,14 @@
                         </button>
                     </div>
                     <br>
-                    <h4 class="header-title">Data Roles</h4>
+                    <h4 class="header-title">Data Permissions</h4>
                     <!-- Tambahkan table-responsive agar tabel bisa di-scroll jika lebarnya lebih besar dari layar -->
                     <div class="table-responsive">
                         <table id="fixed-header-datatable" class="table table-striped dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Roles</th>
+                                    <th>Permissions</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -57,5 +56,5 @@
 @endsection
 
 @section("scripts")
-    @include("SIMRS.roles.js")
+    @include("SIMRS.permission.js")
 @append

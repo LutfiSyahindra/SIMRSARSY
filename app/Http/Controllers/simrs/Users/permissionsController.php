@@ -4,21 +4,15 @@ namespace App\Http\Controllers\simrs\Users;
 
 use App\Http\Controllers\Controller;
 use App\Services\Users\PermissionsService;
-use App\Services\Users\rolesService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class rolesController extends Controller
+class permissionsController extends Controller
 {
-
-    protected $rolesService;
     protected $permissionsService;
-
-    public function __construct(rolesService $rolesService, PermissionsService $permissionsService)
+    public function __construct(PermissionsService $permissionsService)
     {
-        $this->rolesService = $rolesService;
         $this->permissionsService = $permissionsService;
     }
     /**
@@ -26,15 +20,15 @@ class rolesController extends Controller
      */
     public function index()
     {
-        return view('SIMRS.roles.roles');
+        return view('SIMRS.permission.permission');
     }
 
-    public function table()
+     public function table()
     {
-        $roles = $this->rolesService->getRolesData();
-        $dataRoles = [];
-        foreach ($roles as $r) {
-            $dataRoles[] = [
+        $permissions = $this->permissionsService->getPermissionsData();
+        $dataPermissions = [];
+        foreach ($permissions as $r) {
+            $dataPermissions[] = [
                 'id' => $r['id'],
                 'name' => $r['name'],
                 'created_at' => $r['created_at'],
@@ -42,26 +36,24 @@ class rolesController extends Controller
             ];
         }
 
-        return DataTables::of($dataRoles)
+        return DataTables::of($dataPermissions)
         ->addIndexColumn()
-        ->addColumn('actions', function ($dataRoles) {
+        ->addColumn('actions', function ($dataPermissions) {
             return '
-                <button class="btn btn-sm btn-success" onclick="editRoles(' . $dataRoles['id'] . ')"> <i class=" ri-edit-2-fill "></i></button> 
-                <button class="btn btn-sm btn-danger" onclick="deleteRoles(' . $dataRoles['id'] . ')">  <i class=" ri-delete-bin-fill"></i></button>
-                <button class="btn btn-sm btn-primary" onclick="assignPermissions(' . $dataRoles['id'] . ')">  <i class=" ri-delete-bin-fill"></i></button>
+                <button class="btn btn-sm btn-success" onclick="editPermissions(' . $dataPermissions['id'] . ')"> <i class=" ri-edit-2-fill "></i></button> 
+                <button class="btn btn-sm btn-danger" onclick="deletePermissions(' . $dataPermissions['id'] . ')">  <i class=" ri-delete-bin-fill"></i></button>
             ';
         })
         ->rawColumns(['actions'])
         ->make(true);
 
     }
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -83,13 +75,13 @@ class rolesController extends Controller
         }
 
         // Simpan data ke database dengan password yang di-hash
-        $this->rolesService->createRoles(
+        $this->permissionsService->createPermissions(
             $request->name,
         );
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Roles Created successful!',
+            'message' => 'Permission Created successful!',
         ], 201);
     }
 
@@ -106,8 +98,8 @@ class rolesController extends Controller
      */
     public function edit(string $id)
     {
-        $roles = $this->rolesService->findRoles($id);
-        return response()->json($roles);
+        $permissions = $this->permissionsService->findPermissions($id);
+        return response()->json($permissions);
     }
 
     /**
@@ -116,7 +108,7 @@ class rolesController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:roles,name,' . $id,
+            'name' => 'required|string|max:255|unique:permissions,name,' . $id,
         ]);
 
         if ($validator->fails()) {
@@ -126,12 +118,12 @@ class rolesController extends Controller
             ], 422);
         }
 
-        $roles = $this->rolesService->findRoles($id);
+        $roles = $this->permissionsService->findPermissions($id);
         $roles->update(['name' => $request->name]);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'User updated successfully!',
+            'message' => 'Permissions updated successfully!',
         ], 200);
     }
 
@@ -142,14 +134,14 @@ class rolesController extends Controller
     {
         try {
             // Cari role berdasarkan ID
-            $roles = $this->rolesService->findRoles($id);
+            $permission = $this->permissionsService->findPermissions($id);
             // Hapus role
-            $roles->delete();
+            $permission->delete();
 
             // Berikan respons JSON sukses
             return response()->json([
                 'success' => true,
-                'message' => 'role berhasil dihapus.'
+                'message' => 'permission berhasil dihapus.'
             ]);
         } catch (\Exception $e) {
             // Tangani jika terjadi kesalahan
@@ -159,43 +151,4 @@ class rolesController extends Controller
             ], 500);
         }
     }
-
-    public function listPermissions()
-    {
-        $permissions = $this->permissionsService->getPermissionsData();
-        return response()->json(['permissions' => $permissions]);
-    }
-
-    public function getRolePermissions($id)
-    {
-        $role = $this->rolesService->findRoles($id);
-        
-        // Ambil nama permission, bukan ID
-        $assignedPermissions = $role->permissions()->pluck('name')->toArray();
-        
-        Log::info($assignedPermissions); // Debugging
-
-        return response()->json(['assignedPermissions' => $assignedPermissions]);
-    }
-
-
-    public function attachPermissions(Request $request, $roleId)
-    {
-        $role = $this->rolesService->findRoles($roleId);
-
-        if (!$role) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Role tidak ditemukan'
-            ], 404);
-        }
-
-        $role->syncPermissions($request->permissions);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Permissions berhasil diperbarui!'
-        ]);
-    }
-
 }

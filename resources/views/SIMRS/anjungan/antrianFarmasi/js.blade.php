@@ -1,6 +1,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
 <script>
     $(document).ready(function() {
+        let scanner;
+
         function setInitialNoRawat() {
             let inputField = document.getElementById("no_rawat");
             if (inputField) {
@@ -104,5 +107,56 @@
             document.getElementById("customKeyboard").classList.toggle("d-none");
         };
         window.submitFormFarmasi = submitFormFarmasi;
+
+        // === FUNGSI SCAN BARCODE ===
+        window.barcodeScan = function() {
+            $("#scanBarcodeModal").modal("show"); // Tampilkan modal scanner
+
+            // Pastikan scanner dibersihkan sebelum memulai kembali
+            if (window.scanner) {
+                window.scanner.clear();
+            }
+
+            // Inisialisasi scanner baru
+            window.scanner = new Html5QrcodeScanner("reader", {
+                fps: 10,
+                qrbox: 250
+            });
+
+            window.scanner.render(onScanSuccess, onScanError);
+
+            function onScanSuccess(decodedText) {
+                $("#no_rawat").val(decodedText);
+                $("#scanBarcodeModal").modal("hide"); // Tutup modal setelah berhasil scan
+
+                if (window.scanner) {
+                    window.scanner.clear(); // Hentikan scanner setelah sukses
+                }
+
+                // Tunggu modal tertutup sebelum submit
+                setTimeout(() => {
+                    submitFormFarmasi(); // Jalankan fungsi submitFormFarmasi
+                }, 500);
+            }
+
+            function onScanError(errorMessage) {
+                console.warn("Scan error: ", errorMessage);
+            }
+
+            // Hentikan scanner jika modal ditutup
+            $("#scanBarcodeModal").on("hidden.bs.modal", function() {
+                if (window.scanner) {
+                    window.scanner.clear();
+                }
+            });
+        };
+
+
+        // Hentikan scanner saat modal ditutup
+        $("#scanBarcodeModal").on("hidden.bs.modal", function() {
+            if (scanner) {
+                scanner.clear();
+            }
+        });
     });
 </script>

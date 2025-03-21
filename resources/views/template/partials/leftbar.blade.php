@@ -79,7 +79,7 @@
                             <a href="/simrs/roles/index">Role</a>
                         </li>
                         <li>
-                            <a href="simrs/users/index">Permission</a>
+                            <a href="{{ route("permissions.index") }}">Permission</a>
                         </li>
                     </ul>
                 </div>

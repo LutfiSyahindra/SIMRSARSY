@@ -21,5 +21,6 @@ class rolesRepository
     public function findRoles($id){
         return Role::findOrFail($id);
     }
+    
 
 }

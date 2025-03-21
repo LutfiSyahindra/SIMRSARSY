@@ -163,10 +163,6 @@
                     <i class="menu-icon fas fa-list"></i>
                     <h5>Antrian Farmasi</h5>
                 </div>
-                <div class="menu-box" data-bs-toggle="modal" data-bs-target="#farmasiModalScan">
-                    <i class="menu-icon fas fa-list"></i>
-                    <h5>Scan Bukti Register</h5>
-                </div>
             </div>
         </div>
 

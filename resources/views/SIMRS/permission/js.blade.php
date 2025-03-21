@@ -9,12 +9,12 @@
         });
 
         // Table Users
-        let rolesTable = $('#fixed-header-datatable').DataTable({
+        let permissionTable = $('#fixed-header-datatable').DataTable({
             destroy: true,
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route("roles.table") }}", // Sesuaikan dengan route Anda
+                url: "{{ route("permissions.table") }}", // Sesuaikan dengan route Anda
                 type: "GET"
             },
             columns: [{
@@ -39,20 +39,28 @@
         // Modal Add Users (Hide) 
         $('#info-header-modal').on('hidden.bs.modal', function() {
             console.log('Modal ditutup, reset form.');
-            $('#rolesForm')[0].reset();
-            $('#info-header-modalLabel').text('ADD ROLES');
-            $('#submitRoles').text('Submit'); // Atau $('#submitUsers').html('Update');
+            $('#permissionsForm')[0].reset();
+            $('#info-header-modalLabel').text('ADD PERMISSION');
+            $('#submitPermission').text('Submit'); // Atau $('#submitUsers').html('Update');
         });
 
-        $('#rolesForm').on('submit', function(e) {
+        $('#info-header-modal').on('show.bs.modal', function() {
+            console.log('Modal ditutup, reset form.');
+            $('#permissionsForm')[0].reset();
+            $('#info-header-modalLabel').text('ADD PERMISSION');
+            $('#submitPermission').text('Submit'); // Atau $('#submitUsers').html('Update');
+        });
+
+        $('#permissionsForm').on('submit', function(e) {
             e.preventDefault();
 
             let formData = $(this).serialize();
-            let roleId = $('#roleId').val(); // Ambil ID user jika ada
-            let url = roleId ? `/simrs/roles/${roleId}/update` : "{{ route("roles.store") }}";
-            let method = roleId ? 'POST' : 'POST'; // Gunakan POST dan _method=PUT untuk update
+            let permissionId = $('#permissionId').val(); // Ambil ID user jika ada
+            let url = permissionId ? `/simrs/permissions/${permissionId}/update` :
+                "{{ route("permissions.store") }}";
+            let method = permissionId ? 'POST' : 'POST'; // Gunakan POST dan _method=PUT untuk update
 
-            if (roleId) {
+            if (permissionId) {
                 formData += '&_method=PUT'; // Laravel membutuhkan _method=PUT
 
                 // ✅ Jika UPDATE, munculkan SweetAlert
@@ -107,9 +115,9 @@
                             showConfirmButton: false,
                         });
 
-                        $('#rolesForm')[0].reset();
-                        $('#roleId').val(''); // Reset ID
-                        rolesTable.ajax.reload();
+                        $('#permissionsForm')[0].reset();
+                        $('#permissionId').val(''); // Reset ID
+                        permissionTable.ajax.reload();
                     }
                 },
                 error: function(xhr) {
@@ -129,25 +137,26 @@
             });
         }
 
-        window.editRoles = function(id) {
+        window.editPermissions = function(id) {
             const modal = $('#info-header-modal');
             modal.modal('show');
 
-            $('#rolesForm')[0].reset();
-            $('#roleId').val(id); // Set ID user
+            $('#permissionsForm')[0].reset();
+            $('#permissionId').val(id); // Set ID user
             console.log('id', id);
 
             $.ajax({
-                url: `/simrs/roles/${id}/edit`,
+                url: `/simrs/permissions/${id}/edit`,
                 method: 'GET',
                 success: function(response) {
-                    console.log('dataRoles :', response);
-                    $('#info-header-modalLabel').text('EDIT ROLES'); // Ubah judul
-                    $('#submitRoles').text('Update'); // Atau $('#submitUsers').html('Update');
+                    console.log('dataPermissions :', response);
+                    $('#info-header-modalLabel').text('EDIT PERMISSIONS'); // Ubah judul
+                    $('#submitPermission').text(
+                        'Update'); // Atau $('#submitUsers').html('Update');
                     $('#name').val(response.name);
                 },
                 error: function(xhr) {
-                    console.error('Gagal mengambil data user', xhr);
+                    console.error('Gagal mengambil data permissions', xhr);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -158,11 +167,11 @@
             });
         };
 
-        window.deleteRoles = function(id) {
+        window.deletePermissions = function(id) {
             // Tampilkan konfirmasi hapus
             Swal.fire({
                 title: 'Apakah Anda yakin?',
-                text: 'User ini akan dihapus secara permanen!',
+                text: 'Permission ini akan dihapus secara permanen!',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, hapus!',
@@ -171,7 +180,7 @@
                 if (result.isConfirmed) {
                     // Kirim request DELETE menggunakan AJAX
                     $.ajax({
-                        url: "{{ route("roles.delete", ":id") }}".replace(':id',
+                        url: "{{ route("permissions.delete", ":id") }}".replace(':id',
                             id),
                         type: 'DELETE',
                         headers: {
@@ -184,7 +193,7 @@
                                     response.message,
                                     'success'
                                 );
-                                rolesTable.ajax.reload(); // Reload DataTables
+                                permissionTable.ajax.reload(); // Reload DataTables
                             } else {
                                 Swal.fire(
                                     'Gagal!',
@@ -204,67 +213,6 @@
                 }
             });
         }
-
-        window.assignPermissions = function(id) {
-            let roleId = id;
-            console.log(roleId);
-            $('#role_id').val(roleId);
-            $('#assignPermissionsModal').modal('show');
-
-            // Load Permissions yang tersedia
-            $.ajax({
-                url: '/simrs/roles/permissions/list',
-                method: 'GET',
-                success: function(data) {
-                    let options = '';
-                    data.permissions.forEach(function(permission) {
-                        options +=
-                            `<option value="${permission.name}">${permission.name}</option>`;
-                    });
-                    $('#permissions').html(options).select2();
-                }
-            });
-
-            // Load Permissions yang sudah dimiliki oleh Role
-            $.ajax({
-                url: `/simrs/roles/${roleId}/permissions`,
-                method: 'GET',
-                success: function(data) {
-                    $('#permissions').val(data.assignedPermissions).trigger('change');
-                }
-            });
-        }
-
-        $('#assignPermissionsForm').on('submit', function(e) {
-            e.preventDefault();
-
-            let roleId = $('#role_id').val();
-            let selectedPermissions = $('#permissions').val();
-            console.log(selectedPermissions);
-
-            $.ajax({
-                url: `/simrs/roles/${roleId}/permissionsAttach`,
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    permissions: selectedPermissions
-                },
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: response.message,
-                        toast: true,
-                        position: 'top-end',
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                    });
-
-                    $('#assignPermissionsModal').modal('hide');
-                }
-            });
-        });
 
     });
 </script>

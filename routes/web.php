@@ -10,6 +10,7 @@ use App\Http\Controllers\simrs\display\PoliController;
 use App\Http\Controllers\simrs\display\PoliWsController;
 use App\Http\Controllers\simrs\PetugasPanggil\pippPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\poliPanggilController;
+use App\Http\Controllers\simrs\Users\permissionsController;
 use App\Http\Controllers\simrs\Users\rolesController;
 use App\Http\Controllers\simrs\Users\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -78,6 +79,18 @@ Route::middleware('auth')->group(function () {
         Route::get('/roles/{id}/edit', [rolesController::class, 'edit'])->name('roles.edit');
         Route::put('/roles/{id}/update', [rolesController::class, 'update'])->name('roles.update');
         Route::delete('/roles/{id}/delete', [rolesController::class, 'destroy'])->name('roles.delete');
+        Route::get('/roles/permissions/list', [rolesController::class, 'listPermissions'])->name('permissions.list');
+        Route::get('/roles/{id}/permissions', [rolesController::class, 'getRolePermissions'])->name('roles.permissions');
+        Route::post('/roles/{roleId}/permissionsAttach', [rolesController::class, 'attachPermissions'])->name('roles.assign.permissions');
+
+
+        // Permissions
+        Route::get('/permissions/index', [permissionsController::class, 'index'])->name('permissions.index');
+        Route::get('/permissions/table', [permissionsController::class, 'table'])->name('permissions.table');
+        Route::post('/permissions/store', [permissionsController::class, 'store'])->name('permissions.store');
+        Route::get('/permissions/{id}/edit', [permissionsController::class, 'edit'])->name('permissions.edit');
+        Route::put('/permissions/{id}/update', [permissionsController::class, 'update'])->name('permissions.update');
+        Route::delete('/permissions/{id}/delete', [permissionsController::class, 'destroy'])->name('permissions.delete');
 
     });
 

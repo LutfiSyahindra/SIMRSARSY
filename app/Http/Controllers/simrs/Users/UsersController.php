@@ -44,6 +44,7 @@ class UsersController extends Controller
             return '
                 <button class="btn btn-sm btn-success" onclick="editUsers(' . $dataUsers['id'] . ')"> <i class=" ri-edit-2-fill "></i></button> 
                 <button class="btn btn-sm btn-danger" onclick="deleteUsers(' . $dataUsers['id'] . ')">  <i class=" ri-delete-bin-fill"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="assignRole(' . $dataUsers['id'] . ')">  <i class=" ri-delete-bin-fill"></i></button>
             ';
         })
         ->rawColumns(['actions'])

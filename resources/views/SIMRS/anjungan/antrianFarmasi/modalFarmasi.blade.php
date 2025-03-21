@@ -29,10 +29,12 @@
                             <button type="button" class="btn btn-outline-secondary" onclick="toggleKeyboard()">
                                 <i class="fas fa-keyboard"></i>
                             </button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="barcodeScan()">
+                                <i class="fas fa-barcode"></i>
+                            </button>
                         </div>
                     </div>
                 </form>
-
                 <!-- Keyboard Numerik -->
                 <div id="customKeyboard" class="mt-3 d-none">
                     <div class="d-grid gap-2">
@@ -63,6 +65,27 @@
             <!-- Footer Modal -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Scan Barcode -->
+<div class="modal fade" id="scanBarcodeModal" tabindex="-1" aria-labelledby="scanBarcodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="scanBarcodeModalLabel">
+                    <i class="fas fa-barcode me-2"></i> Scan Barcode / QR Code
+                </h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="reader" class="border p-2"></div>
+                <p class="mt-2 text-muted">Arahkan kamera ke barcode atau QR Code pasien.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
             </div>
         </div>
     </div>
