@@ -6,7 +6,8 @@
 @endsection
 
 @section("content")
-@include('SIMRS.users.modal')
+    @include("SIMRS.users.modal")
+    @include("SIMRS.users.assignRoles")
     <!-- start page title -->
     <div class="row">
         <div class="col-12">

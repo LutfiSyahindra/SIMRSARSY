@@ -41,7 +41,7 @@
                 </div>
                 <div class="flex-grow-1 ms-2">
                     <span class="fw-semibold fs-15 d-block">{{ Auth::user()->name }}</span>
-                    <span class="fs-13">{{ Auth::user()->role ?? "User" }}</span>
+                    <span class="fs-13">{{ Auth::user()->getRoleNames()->first() ?? "User" }}</span>
                 </div>
                 <div class="ms-auto">
                     <i class="ri-arrow-right-s-fill fs-20"></i>
@@ -63,28 +63,29 @@
             </li>
 
             {{-- Users --}}
-            <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarUsers" aria-expanded="false" aria-controls="sidebarUsers"
-                    class="side-nav-link">
-                    <i class="  ri-shield-user-fill "></i>
-                    <span> Users </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="sidebarUsers">
-                    <ul class="side-nav-second-level">
-                        <li>
-                            <a href="/simrs/users/index">User</a>
-                        </li>
-                        <li>
-                            <a href="/simrs/roles/index">Role</a>
-                        </li>
-                        <li>
-                            <a href="{{ route("permissions.index") }}">Permission</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
+            @can("SIMRS.USERS")
+                <li class="side-nav-item">
+                    <a data-bs-toggle="collapse" href="#sidebarUsers" aria-expanded="false" aria-controls="sidebarUsers"
+                        class="side-nav-link">
+                        <i class="  ri-shield-user-fill "></i>
+                        <span> Users </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarUsers">
+                        <ul class="side-nav-second-level">
+                            <li>
+                                <a href="/simrs/users/index">User</a>
+                            </li>
+                            <li>
+                                <a href="/simrs/roles/index">Role</a>
+                            </li>
+                            <li>
+                                <a href="{{ route("permissions.index") }}">Permission</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endcan
             {{-- display --}}
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false" aria-controls="sidebarEmail"
@@ -95,21 +96,31 @@
                 </a>
                 <div class="collapse" id="sidebarEmail">
                     <ul class="side-nav-second-level">
-                        <li>
-                            <a href="/simrs/display/poli">Poli</a>
-                        </li>
-                        <li>
-                            <a href="/simrs/display/poliws">PoliWS</a>
-                        </li>
-                        <li>
-                            <a href="/simrs/display/pipp">PIPP</a>
-                        </li>
-                        <li>
-                            <a href="/simrs/display/apotek">Apotek</a>
-                        </li>
-                        <li>
-                            <a href="/simrs/anjungan/index">Anjungan</a>
-                        </li>
+                        @can("SIMRS.DISPLAY.POLIKHANZA")
+                            <li>
+                                <a href="/simrs/display/poli">Poli</a>
+                            </li>
+                        @endcan
+                        @can("SIMRS.DISPLAY.POLI")
+                            <li>
+                                <a href="/simrs/display/poliws">PoliWS</a>
+                            </li>
+                        @endcan
+                        @can("SIMRS.DISPLAY.PIPP")
+                            <li>
+                                <a href="/simrs/display/pipp">PIPP</a>
+                            </li>
+                        @endcan
+                        @can("SIMRS.DISPLAY.FARMASI")
+                            <li>
+                                <a href="/simrs/display/apotek">Apotek</a>
+                            </li>
+                        @endcan
+                        @can("SIMRS.DISPLAY.ANJUNGAN")
+                            <li>
+                                <a href="/simrs/anjungan/index">Anjungan</a>
+                            </li>
+                        @endcan
                     </ul>
                 </div>
             </li>
@@ -124,12 +135,16 @@
                 </a>
                 <div class="collapse" id="petugasPanggil">
                     <ul class="side-nav-second-level">
-                        <li>
-                            <a href="/simrs/petugasPanggil/poliPanggil">Poli</a>
-                        </li>
-                        <li>
-                            <a href="/simrs/petugasPanggil/pipp/pippPanggil">PIPP</a>
-                        </li>
+                        @can("SIMRS.PANGGIL.POLI")
+                            <li>
+                                <a href="/simrs/petugasPanggil/poliPanggil">Poli</a>
+                            </li>
+                        @endcan
+                        @can("SIMRS.PANGGIL.PIPP")
+                            <li>
+                                <a href="/simrs/petugasPanggil/pipp/pippPanggil">PIPP</a>
+                            </li>
+                        @endcan
                     </ul>
                 </div>
             </li>

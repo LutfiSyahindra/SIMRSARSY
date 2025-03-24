@@ -71,6 +71,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/{id}/edit', [UsersController::class, 'edit'])->name('users.edit');
         Route::put('/users/{id}/update', [UsersController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}/delete', [UsersController::class, 'destroy'])->name('users.delete');
+        Route::get('/users/roles/list', [UsersController::class, 'listRoles'])->name('users.roles.list');
+        Route::get('/users/{id}/roles', [UsersController::class, 'getUserRoles'])->name('usersRoles.roles');
+        Route::post('/users/{userId}/rolesAttach', [UsersController::class, 'attachRoles'])->name('users.assign.roles');
 
         // Roles
         Route::get('/roles/index', [rolesController::class, 'index'])->name('roles.index');

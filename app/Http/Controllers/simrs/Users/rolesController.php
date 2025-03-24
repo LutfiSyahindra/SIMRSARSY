@@ -48,7 +48,7 @@ class rolesController extends Controller
             return '
                 <button class="btn btn-sm btn-success" onclick="editRoles(' . $dataRoles['id'] . ')"> <i class=" ri-edit-2-fill "></i></button> 
                 <button class="btn btn-sm btn-danger" onclick="deleteRoles(' . $dataRoles['id'] . ')">  <i class=" ri-delete-bin-fill"></i></button>
-                <button class="btn btn-sm btn-primary" onclick="assignPermissions(' . $dataRoles['id'] . ')">  <i class=" ri-delete-bin-fill"></i></button>
+                <button class="btn btn-sm btn-primary" onclick="assignPermissions(' . $dataRoles['id'] . ')">  <i class=" ri-user-settings-fill"></i></button>
             ';
         })
         ->rawColumns(['actions'])
@@ -177,8 +177,7 @@ class rolesController extends Controller
 
         return response()->json(['assignedPermissions' => $assignedPermissions]);
     }
-
-
+    
     public function attachPermissions(Request $request, $roleId)
     {
         $role = $this->rolesService->findRoles($roleId);

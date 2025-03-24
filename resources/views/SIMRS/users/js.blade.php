@@ -206,5 +206,66 @@
             });
         }
 
+        window.assignRole = function(id) {
+            let userId = id;
+            console.log(userId);
+            $('#user_id').val(userId);
+            $('#assignRolesModal').modal('show');
+
+            // Load Permissions yang tersedia
+            $.ajax({
+                url: '{{ route("users.roles.list") }}',
+                method: 'GET',
+                success: function(data) {
+                    let options = '';
+                    data.roles.forEach(function(role) {
+                        options +=
+                            `<option value="${role.name}">${role.name}</option>`;
+                    });
+                    $('#roles').html(options).select2();
+                }
+            });
+
+            // Load Permissions yang sudah dimiliki oleh Role
+            $.ajax({
+                url: `/simrs/users/${id}/roles`,
+                method: 'GET',
+                success: function(data) {
+                    $('#roles').val(data.assignedRoles).trigger('change');
+                }
+            });
+        }
+
+        $('#assignRolesForm').on('submit', function(e) {
+            e.preventDefault();
+
+            let userId = $('#user_id').val();
+            let selectedRoles = $('#roles').val();
+            console.log(selectedRoles);
+
+            $.ajax({
+                url: `/simrs/users/${userId}/rolesAttach`,
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    roles: selectedRoles
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: response.message,
+                        toast: true,
+                        position: 'top-end',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
+
+                    $('#assignRolesModal').modal('hide');
+                }
+            });
+        });
+
     });
 </script>

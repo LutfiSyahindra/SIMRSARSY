@@ -4,6 +4,7 @@ namespace App\Http\Controllers\simrs\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\Users\rolesService;
 use App\Services\Users\UsersService;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
@@ -14,8 +15,10 @@ class UsersController extends Controller
 {
 
     protected $usersService;
-    public function __construct(UsersService $usersService)
+    protected $rolesService;
+    public function __construct(UsersService $usersService, rolesService $rolesService)
     {
+        $this->rolesService = $rolesService;
         $this->usersService = $usersService;
     }
     /**
@@ -44,7 +47,7 @@ class UsersController extends Controller
             return '
                 <button class="btn btn-sm btn-success" onclick="editUsers(' . $dataUsers['id'] . ')"> <i class=" ri-edit-2-fill "></i></button> 
                 <button class="btn btn-sm btn-danger" onclick="deleteUsers(' . $dataUsers['id'] . ')">  <i class=" ri-delete-bin-fill"></i></button>
-                <button class="btn btn-sm btn-danger" onclick="assignRole(' . $dataUsers['id'] . ')">  <i class=" ri-delete-bin-fill"></i></button>
+                <button class="btn btn-sm btn-primary" onclick="assignRole(' . $dataUsers['id'] . ')">  <i class=" ri-admin-fill"></i></button>
             ';
         })
         ->rawColumns(['actions'])
@@ -160,5 +163,42 @@ class UsersController extends Controller
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function listRoles()
+    {
+        $roles = $this->rolesService->getRolesData();
+        return response()->json(['roles' => $roles]);
+    }
+
+
+    public function getUserRoles($id)
+    {
+        $user = $this->usersService->findUser($id);
+        
+        // Ambil nama permission, bukan ID
+        $assignedRoles = $user->roles()->pluck('name')->toArray();
+        
+        Log::info($assignedRoles); // Debugging
+
+        return response()->json(['assignedRoles' => $assignedRoles]);
+    }
+    
+    public function attachRoles(Request $request, $userId)
+    {
+        $user = $this->usersService->findUser($userId);
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Role tidak ditemukan'
+            ], 404);
+        }
+
+        $user->syncRoles($request->roles);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Roles berhasil diperbarui!'
+        ]);
     }
 }
