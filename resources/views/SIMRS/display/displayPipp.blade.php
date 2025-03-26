@@ -371,17 +371,27 @@
                         let text =
                             `Pasien atas nama: ${formattedPasien}, Silahkan ke Loket P iPepe`;
                         let speech = new SpeechSynthesisUtterance(text);
-                        speech.lang = "id-ID";
-                        speech.rate = 0.8;
-                        speech.pitch = 1;
+                        let bell = new Audio(
+                            "{{ asset("plugins/audio/Airport_Bell.mp3") }}"); // Ganti dengan path file bell Anda
 
-                        speech.onend = function() {
-                            isSpeaking = false;
-                            processQueue();
+                        // Mainkan bell terlebih dahulu
+                        bell.play();
+
+                        // Tunggu hingga suara bell selesai sebelum menjalankan TTS
+                        bell.onended = function() {
+                            let speech = new SpeechSynthesisUtterance(text);
+                            speech.lang = "id-ID";
+                            speech.rate = 0.8;
+                            speech.pitch = 1;
+
+                            speech.onend = function() {
+                                isSpeaking = false;
+                                processQueue();
+                            };
+
+                            window.speechSynthesis.cancel();
+                            window.speechSynthesis.speak(speech);
                         };
-
-                        window.speechSynthesis.cancel();
-                        window.speechSynthesis.speak(speech);
                     } else {
                         console.error("Browser tidak mendukung Text-to-Speech!");
                     }
