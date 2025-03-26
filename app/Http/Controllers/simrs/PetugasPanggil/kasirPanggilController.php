@@ -24,10 +24,20 @@ class kasirPanggilController extends Controller
         return view('SIMRS.petugasPanggil.kasir.kasirPanggil');
     }
 
-    public function getDataPasien()
+    public function getDataPasien(Request $request)
     {
-        $dataPasien = $this->poliService->getDataPasien();
-        return response()->json($dataPasien);
+        Log::info($request);
+        $jenisRawat = $request->jenis_rawat;
+        $tgl1 = $request->start_date;
+        $tgl2 = $request->end_date;
+
+        if($jenisRawat == 'Rawat Jalan'){
+            $dataPasien = $this->poliService->getDataPasien();
+            return response()->json($dataPasien);
+        }elseif ($jenisRawat == 'Rawat Inap') {
+            $dataPasien = $this->poliService->getDataPasienRawatInap($tgl1, $tgl2);
+            return response()->json($dataPasien);
+        }
     }
 
     public function panggilKasir(Request $request)

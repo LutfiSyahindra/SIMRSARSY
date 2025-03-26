@@ -32,4 +32,9 @@ class PoliService
         return $this->poliRepository->getDataPasien();
     }
 
+    public function getDataPasienRawatInap($tgl1, $tgl2)
+    {
+        return $this->poliRepository->getDataPasienRanap($tgl1, $tgl2);
+    }
+
 }

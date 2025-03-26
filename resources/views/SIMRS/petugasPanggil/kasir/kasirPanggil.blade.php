@@ -57,6 +57,21 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="date-range">Filter Tanggal:</label>
+                                            <input type="text" id="date-range" class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="jenis-rawat">Jenis Rawat:</label>
+                                            <select id="jenis-rawat" class="form-control select2">
+                                                <option value="">-- Pilih Jenis Rawat --</option>
+                                                <option value="Rawat Jalan">Rawat Jalan</option>
+                                                <option value="Rawat Inap">Rawat Inap</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <br>
                                     <h4 class="header-title">Data Pasien</h4>
                                     <!-- Tambahkan table-responsive agar tabel bisa di-scroll jika lebarnya lebih besar dari layar -->

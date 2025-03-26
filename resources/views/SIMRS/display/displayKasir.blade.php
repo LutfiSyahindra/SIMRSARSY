@@ -363,25 +363,33 @@
                     if ('speechSynthesis' in window) {
                         let formattedDokter = formatPronunciation(dokter);
                         let formattedPasien = formatPatientName(pasien);
-                        let text =
-                            `Pasien atas nama: ${formattedPasien}, Silahkan ke Loket Pembayaran`;
-                        let speech = new SpeechSynthesisUtterance(text);
-                        speech.lang = "id-ID";
-                        speech.rate = 0.8;
-                        speech.pitch = 1;
+                        let text = `Pasien atas nama: ${formattedPasien}, Silahkan ke Loket Kasir`;
 
-                        speech.onend = function() {
-                            isSpeaking = false;
-                            processQueue();
+                        let bell = new Audio(
+                            "{{ asset("plugins/audio/Airport_Bell.mp3") }}"); // Ganti dengan path file bell Anda
+
+                        // Mainkan bell terlebih dahulu
+                        bell.play();
+
+                        // Tunggu hingga suara bell selesai sebelum menjalankan TTS
+                        bell.onended = function() {
+                            let speech = new SpeechSynthesisUtterance(text);
+                            speech.lang = "id-ID";
+                            speech.rate = 0.8;
+                            speech.pitch = 1;
+
+                            speech.onend = function() {
+                                isSpeaking = false;
+                                processQueue();
+                            };
+
+                            window.speechSynthesis.cancel();
+                            window.speechSynthesis.speak(speech);
                         };
-
-                        window.speechSynthesis.cancel();
-                        window.speechSynthesis.speak(speech);
                     } else {
                         console.error("Browser tidak mendukung Text-to-Speech!");
                     }
                 }
-
 
                 function updateCustomerServices() {
                     let container = $('#customer-services');

@@ -44,4 +44,23 @@ class PoliRepository
         ->cursor();
     }
 
+    public function getDataPasienRanap($tgl1, $tgl2)
+    {
+        return pasienPoliModel::join('kamar_inap', 'reg_periksa.no_rawat', '=', 'kamar_inap.no_rawat')
+        ->join('pasien', 'reg_periksa.no_rkm_medis', '=', 'pasien.no_rkm_medis')
+        ->join('dokter', 'reg_periksa.kd_dokter', '=', 'dokter.kd_dokter')
+        ->select(
+            'reg_periksa.no_rawat',
+            'reg_periksa.no_reg',
+            'pasien.nm_pasien',
+            'pasien.tgl_lahir',
+            'pasien.alamat',
+            'pasien.jk',
+            'pasien.no_rkm_medis',
+            'dokter.nm_dokter'
+        )
+        ->whereBetween('kamar_inap.tgl_masuk', [$tgl1, $tgl2])
+        ->cursor();
+    }
+
 }
