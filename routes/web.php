@@ -5,9 +5,11 @@ use App\Http\Controllers\simrs\Anjungan\admisiController;
 use App\Http\Controllers\simrs\Anjungan\AnjunganController;
 use App\Http\Controllers\simrs\Anjungan\antrianFarmasiController;
 use App\Http\Controllers\simrs\display\apotekwsController;
+use App\Http\Controllers\simrs\display\KasirController;
 use App\Http\Controllers\simrs\display\PippController;
 use App\Http\Controllers\simrs\display\PoliController;
 use App\Http\Controllers\simrs\display\PoliWsController;
+use App\Http\Controllers\simrs\PetugasPanggil\kasirPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\pippPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\poliPanggilController;
 use App\Http\Controllers\simrs\Users\permissionsController;
@@ -59,10 +61,18 @@ Route::middleware('auth')->group(function () {
         // Display PIPP
         Route::get('/display/pipp', [PippController::class, 'index'])->name('display.pipp');
 
+        // Display Kasir
+        Route::get('/display/kasir', [KasirController::class, 'index'])->name('display.kasir');
+
         // Petugas Panggil Pipp
         Route::get('/petugasPanggil/pipp/pippPanggil', [pippPanggilController::class, 'index'])->name('petugasPanggil.pipp.pippPanggil');
         Route::get('/petugasPanggil/pipp/pippPanggil/dataPasien', [pippPanggilController::class, 'getDataPasien'])->name('petugasPanggil.pipp.pippPanggil.dataPasien');
         Route::post('/petugasPanggil/pipp/pippPanggil/panggilPipp', [pippPanggilController::class, 'panggilPipp'])->name('petugasPanggil.pipp.pippPanggil.panggilPipp');
+
+        // Petugas Panggil Kasir
+        Route::get('/petugasPanggil/kasir/kasirPanggil', [kasirPanggilController::class, 'index'])->name('petugasPanggil.kasir.kasirPanggil');
+        Route::get('/petugasPanggil/kasir/kasirPanggil/dataPasien', [kasirPanggilController::class, 'getDataPasien'])->name('petugasPanggil.kasir.kasirPanggil.dataPasien');
+        Route::post('/petugasPanggil/kasir/kasirPanggil/panggilKasir', [kasirPanggilController::class, 'panggilKasir'])->name('petugasPanggil.kasir.kasirPanggil.panggilKasir');
 
         // Users
         Route::get('/users/index', [UsersController::class, 'index'])->name('users.index');

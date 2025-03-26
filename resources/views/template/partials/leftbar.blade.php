@@ -121,6 +121,11 @@
                                 <a href="/simrs/anjungan/index">Anjungan</a>
                             </li>
                         @endcan
+                        @can("SIMRS.DISPLAY.KASIR")
+                            <li>
+                                <a href="{{ route("display.kasir") }}">Kasir</a>
+                            </li>
+                        @endcan
                     </ul>
                 </div>
             </li>
@@ -143,6 +148,11 @@
                         @can("SIMRS.PANGGIL.PIPP")
                             <li>
                                 <a href="/simrs/petugasPanggil/pipp/pippPanggil">PIPP</a>
+                            </li>
+                        @endcan
+                        @can("SIMRS.PANGGIL.KASIR")
+                            <li>
+                                <a href="{{ route("petugasPanggil.kasir.kasirPanggil") }}">Kasir</a>
                             </li>
                         @endcan
                     </ul>
