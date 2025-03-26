@@ -346,12 +346,13 @@
                         "Sdr": "Saudara"
                     };
 
+                    // Menyesuaikan gelar
                     for (let key in replacements) {
                         pasien = pasien.replace(new RegExp(`\\b${key}\\.?\\b`, "gi"), replacements[key]);
                     }
 
-                    // Menangani format "Nama, Gelar"
-                    let match = pasien.match(/(.*),\s*(Tuan|Nyonya|Anak|Nona|Saudara)/i);
+                    // Menangani format "Nama, Gelar" atau "Nama.Gelar"
+                    let match = pasien.match(/(.*)[,\.]\s*(Tuan|Nyonya|Anak|Nona|Saudara)/i);
                     if (match) {
                         pasien = `${match[2]}. ${match[1]}`;
                     }
