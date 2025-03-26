@@ -340,24 +340,27 @@
                 function formatPatientName(pasien) {
                     let replacements = {
                         "Tn": "Tuan",
-                        "Ny": "Nyonya"
+                        "Ny": "Nyonya",
+                        "An": "Anak",
+                        "Nn": "Nona",
+                        "Sdr": "Saudara"
                     };
 
                     for (let key in replacements) {
                         pasien = pasien.replace(new RegExp(`\\b${key}\\.?\\b`, "gi"), replacements[key]);
                     }
 
-                    let match = pasien.match(/(.*),\s*(Tuan|Nyonya)/i);
+                    // Menangani format "Nama, Gelar"
+                    let match = pasien.match(/(.*),\s*(Tuan|Nyonya|Anak|Nona|Saudara)/i);
                     if (match) {
                         pasien = `${match[2]}. ${match[1]}`;
                     }
 
-                    // Ubah nama kapital semua menjadi format normal
+                    // Ubah kapitalisasi ke format normal (huruf pertama tiap kata besar)
                     pasien = pasien.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
 
                     return pasien;
                 }
-
 
                 function speakQueue(dokter, poli, nomor, pasien) {
                     if ('speechSynthesis' in window) {
