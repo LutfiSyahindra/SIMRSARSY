@@ -126,6 +126,11 @@
                                 <a href="{{ route("display.kasir") }}">Kasir</a>
                             </li>
                         @endcan
+                        @can("SIMRS.DISPLAY.KHANZA.KASIR")
+                            <li>
+                                <a href="{{ route("display.khanza.kasir") }}">Kasir KHANZA</a>
+                            </li>
+                        @endcan
                     </ul>
                 </div>
             </li>

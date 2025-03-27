@@ -6,6 +6,7 @@ use App\Http\Controllers\simrs\Anjungan\AnjunganController;
 use App\Http\Controllers\simrs\Anjungan\antrianFarmasiController;
 use App\Http\Controllers\simrs\display\apotekwsController;
 use App\Http\Controllers\simrs\display\KasirController;
+use App\Http\Controllers\simrs\display\KasirKhnzaController;
 use App\Http\Controllers\simrs\display\PippController;
 use App\Http\Controllers\simrs\display\PoliController;
 use App\Http\Controllers\simrs\display\PoliWsController;
@@ -62,7 +63,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/display/pipp', [PippController::class, 'index'])->name('display.pipp');
 
         // Display Kasir
-        Route::get('/display/kasir', [KasirController::class, 'index'])->name('display.kasir');
+        Route::get('/display/kasir', [KasirController::class, 'index'])->name('display.kasir');  
+        Route::get('/display/kasirKahnza', [KasirKhnzaController::class, 'index'])->name('display.khanza.kasir');  
+        Route::get('/display/kasirKahnza/panggil', [KasirKhnzaController::class, 'panggilAntrean'])->name('display.khanza.kasir.panggil');  
+        Route::put('/display/kasirKahnza/update', [KasirKhnzaController::class, 'updateAntrean'])->name('display.khanza.kasir.update');  
 
         // Petugas Panggil Pipp
         Route::get('/petugasPanggil/pipp/pippPanggil', [pippPanggilController::class, 'index'])->name('petugasPanggil.pipp.pippPanggil');
