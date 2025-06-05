@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\QrCodeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\simrs\Anjungan\admisiController;
 use App\Http\Controllers\simrs\Anjungan\AnjunganController;
@@ -16,6 +17,9 @@ use App\Http\Controllers\simrs\PetugasPanggil\poliPanggilController;
 use App\Http\Controllers\simrs\Users\permissionsController;
 use App\Http\Controllers\simrs\Users\rolesController;
 use App\Http\Controllers\simrs\Users\UsersController;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -36,9 +40,19 @@ Route::get('/dashboard', function () {
     return view('SIMRS.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::middleware('auth')->group(function () {
 
     Route::prefix('simrs')->group(function () {
+
+         // Wagateway
+        Route::get('/waGateway/wa', [QrCodeController::class, 'index']);
+        Route::get('/wa-qr-view', [QrCodeController::class, 'showQrPage'])->name('wa-qr-view');
+        Route::get('/wa-qr-fetch', [QrCodeController::class, 'fetchQr'])->name('wa-qr-fetchQr');
+        Route::post('/qr/receive', [QrCodeController::class, 'receiveQr']);
+        Route::get('/qrcode', [QrCodeController::class, 'show']);
+
+
         // Display Poli
         Route::get('/display/poli', [PoliController::class, 'index'])->name('display.poli');
         Route::get('/display/poli/data', [PoliController::class, 'data'])->name('display.poli.data');
@@ -116,4 +130,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::prefix('api')->group(function () {
+    require base_path('routes/api.php');
+});
 require __DIR__.'/auth.php';
+

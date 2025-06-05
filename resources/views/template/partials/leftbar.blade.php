@@ -164,6 +164,23 @@
                 </div>
             </li>
 
+            {{-- petugas panggil --}}
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#waGateway" aria-expanded="false" aria-controls="waGateway"
+                    class="side-nav-link">
+                    <i class="  ri-surround-sound-fill  "></i>
+                    <span> Wa-Gateway </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="waGateway">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="/simrs/waGateway/wa">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
         </ul>
         <!--- End Sidemenu -->
 
