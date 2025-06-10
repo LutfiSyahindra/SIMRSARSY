@@ -3,10 +3,10 @@
     <!-- Brand Logo Light -->
     <a href="index.html" class="logo logo-light">
         <span class="logo-lg">
-            <img src="{{ asset("dist/assets/images/logo.png") }}" alt="logo">
+            <img src="{{ asset("dist/assets/images/logoArsy.png") }}" alt="logo">
         </span>
         <span class="logo-sm">
-            <img src="{{ asset("dist/assets/images/logo-sm.png") }}" alt="small logo">
+            <img src="{{ asset("dist/assets/images/logoArsy.png") }}" alt="small logo">
         </span>
     </a>
 
@@ -86,6 +86,7 @@
                     </div>
                 </li>
             @endcan
+
             {{-- display --}}
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false" aria-controls="sidebarEmail"
@@ -164,18 +165,37 @@
                 </div>
             </li>
 
-            {{-- petugas panggil --}}
+            {{-- wa gateway --}}
+            @can("SIMRS.WA_GATEWAY")
+                <li class="side-nav-item">
+                    <a data-bs-toggle="collapse" href="#waGateway" aria-expanded="false" aria-controls="waGateway"
+                        class="side-nav-link">
+                        <i class="ri-whatsapp-fill"></i>
+                        <span> Wa-Gateway </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="waGateway">
+                        <ul class="side-nav-second-level">
+                            <li>
+                                <a href="/simrs/waGateway/wa">Login</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endcan
+
+            {{-- It --}}
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#waGateway" aria-expanded="false" aria-controls="waGateway"
+                <a data-bs-toggle="collapse" href="#khususIt" aria-expanded="false" aria-controls="khususIt"
                     class="side-nav-link">
-                    <i class="  ri-surround-sound-fill  "></i>
-                    <span> Wa-Gateway </span>
+                    <i class="ri-computer-line"></i> <!-- ganti icon di sini -->
+                    <span> IT </span>
                     <span class="menu-arrow"></span>
                 </a>
-                <div class="collapse" id="waGateway">
+                <div class="collapse" id="khususIt">
                     <ul class="side-nav-second-level">
                         <li>
-                            <a href="/simrs/waGateway/wa">Login</a>
+                            <a href="/simrs/khususIt/index">Dashboard</a>
                         </li>
                     </ul>
                 </div>

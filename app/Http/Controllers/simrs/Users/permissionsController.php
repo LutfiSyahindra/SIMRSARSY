@@ -23,7 +23,7 @@ class permissionsController extends Controller
         return view('SIMRS.permission.permission');
     }
 
-     public function table()
+    public function table()
     {
         $permissions = $this->permissionsService->getPermissionsData();
         $dataPermissions = [];

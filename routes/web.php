@@ -11,6 +11,7 @@ use App\Http\Controllers\simrs\display\KasirKhnzaController;
 use App\Http\Controllers\simrs\display\PippController;
 use App\Http\Controllers\simrs\display\PoliController;
 use App\Http\Controllers\simrs\display\PoliWsController;
+use App\Http\Controllers\simrs\It\ItController;
 use App\Http\Controllers\simrs\PetugasPanggil\kasirPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\pippPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\poliPanggilController;
@@ -51,7 +52,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/wa-qr-fetch', [QrCodeController::class, 'fetchQr'])->name('wa-qr-fetchQr');
         Route::post('/qr/receive', [QrCodeController::class, 'receiveQr']);
         Route::get('/qrcode', [QrCodeController::class, 'show']);
-
 
         // Display Poli
         Route::get('/display/poli', [PoliController::class, 'index'])->name('display.poli');
@@ -114,7 +114,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/roles/{id}/permissions', [rolesController::class, 'getRolePermissions'])->name('roles.permissions');
         Route::post('/roles/{roleId}/permissionsAttach', [rolesController::class, 'attachPermissions'])->name('roles.assign.permissions');
 
-
         // Permissions
         Route::get('/permissions/index', [permissionsController::class, 'index'])->name('permissions.index');
         Route::get('/permissions/table', [permissionsController::class, 'table'])->name('permissions.table');
@@ -122,6 +121,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/permissions/{id}/edit', [permissionsController::class, 'edit'])->name('permissions.edit');
         Route::put('/permissions/{id}/update', [permissionsController::class, 'update'])->name('permissions.update');
         Route::delete('/permissions/{id}/delete', [permissionsController::class, 'destroy'])->name('permissions.delete');
+
+        // It
+        Route::get('/khususIt/index', [ItController::class, 'index'])->name('khususIt.index');
+        Route::get('/khususIt/laporan', [ItController::class, 'viewLaporan'])->name('khususIt.laporan');
+        Route::get('/khususIt/laporan/table', [ItController::class, 'table'])->name('khususIt.laporan.table');
+        Route::post('/khususIt/laporan/store', [ItController::class, 'store'])->name('khususIt.laporan.store');
+        Route::get('/khususIt/laporan/{id}/edit', [ItController::class, 'edit'])->name('khususIt.laporan.edit');
+        Route::put('/khususIt/laporan/{id}/update', [ItController::class, 'update'])->name('khususIt.laporan.update');
+        Route::delete('/khususIt/laporan/{id}/delete', [ItController::class, 'destroy'])->name('khususIt.laporan.delete');
+
+        Route::get('/khususIt/widget/pengaduan', [ItController::class, 'widgetPengaduan'])->name('khususIt.widget.pengaduan');
+        Route::get('/khususIt/widget/restime', [ItController::class, 'widgetAverageResponseTime'])->name('khususIt.widget.restime');
+        Route::get('/khususIt/widget/donetime', [ItController::class, 'widgetAverageCompletionTime'])->name('khususIt.widget.donetime');
 
     });
 
