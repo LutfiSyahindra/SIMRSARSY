@@ -50,7 +50,7 @@
     <script>
         async function fetchQRCode() {
             try {
-                const response = await fetch('http://localhost:3000/get-qr');
+                const response = await fetch('http://192.168.2.168:3000/get-qr');
                 const data = await response.json();
 
                 const imgEl = document.getElementById('qr-image');
@@ -84,7 +84,7 @@
 
         async function fetchUserInfo() {
             try {
-                const response = await fetch('http://localhost:3000/get-user');
+                const response = await fetch('http://192.168.2.168:3000/get-user');
                 const data = await response.json();
                 const userInfoEl = document.getElementById('wa-user-info');
                 console.log(data);
