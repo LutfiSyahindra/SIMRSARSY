@@ -6,7 +6,7 @@
     <meta content="Coderthemes" name="author" />
 
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset("dist/assets/images/favicon.ico") }}">
+    <link rel="shortcut icon" href="{{ asset("dist/assets/images/logoArsy.png") }}">
 
     <!-- Daterangepicker css -->
     <link rel="stylesheet" href="{{ asset("dist/assets/vendor/daterangepicker/daterangepicker.css") }}">

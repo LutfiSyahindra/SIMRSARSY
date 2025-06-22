@@ -261,7 +261,7 @@ class ItController extends Controller
         ]);
     }
     
-    
+
     public function widgetAverageCompletionTime(Request $request)
     {
         // Ambil tanggal dari request, default ke bulan ini jika tidak ada

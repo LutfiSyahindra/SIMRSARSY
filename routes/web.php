@@ -18,6 +18,7 @@ use App\Http\Controllers\simrs\PetugasPanggil\poliPanggilController;
 use App\Http\Controllers\simrs\Users\permissionsController;
 use App\Http\Controllers\simrs\Users\rolesController;
 use App\Http\Controllers\simrs\Users\UsersController;
+use App\Http\Controllers\simrs\waGateway\DashboardWaController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -52,6 +53,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/wa-qr-fetch', [QrCodeController::class, 'fetchQr'])->name('wa-qr-fetchQr');
         Route::post('/qr/receive', [QrCodeController::class, 'receiveQr']);
         Route::get('/qrcode', [QrCodeController::class, 'show']);
+        Route::get('/waGetway/Dashboard', [DashboardWaController::class, 'index']);
+        Route::get('/waGetway/terkirim', [DashboardWaController::class, 'widgetTerkirim']);
+        Route::get('/waGetway/terjadwal', [DashboardWaController::class, 'widgetTerjadwal']);
+        Route::get('/waGetway/gagal', [DashboardWaController::class, 'widgetGagal']);
+        Route::get('/waGetway/belum', [DashboardWaController::class, 'widgetBelum']);
+        Route::get('/waGetway/batal', [DashboardWaController::class, 'widgetBatal']);
+        Route::get('/waGetway/tabledata', [DashboardWaController::class, 'tabelData']);
 
         // Display Poli
         Route::get('/display/poli', [PoliController::class, 'index'])->name('display.poli');

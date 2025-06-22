@@ -1,22 +1,23 @@
 <div class="leftside-menu">
 
     <!-- Brand Logo Light -->
-    <a href="index.html" class="logo logo-light">
+    {{-- <a href="index.html" class="logo logo-light">
         <span class="logo-lg">
             <img src="{{ asset("dist/assets/images/logoArsy.png") }}" alt="logo">
         </span>
         <span class="logo-sm">
             <img src="{{ asset("dist/assets/images/logoArsy.png") }}" alt="small logo">
         </span>
-    </a>
+    </a> --}}
 
     <!-- Brand Logo Dark -->
     <a href="index.html" class="logo logo-dark">
-        <span class="logo-lg">
-            <img src="{{ asset("dist/assets/images/logo-dark.png") }}" alt="dark logo">
+        <span>
+            <img src="{{ asset("dist/assets/images/logoArsy.png") }}" alt="dark logo" height="50">
+            {{-- <span class="ms-2 h4 mb-0 text-dark d-none d-lg-inline">SIMRS ARSY</span> --}}
         </span>
         <span class="logo-sm">
-            <img src="{{ asset("dist/assets/images/logo-sm.png") }}" alt="small logo">
+            <img src="{{ asset("dist/assets/images/logo-sm.png") }}" alt="small logo" height="100">
         </span>
     </a>
 
@@ -178,6 +179,9 @@
                         <ul class="side-nav-second-level">
                             <li>
                                 <a href="/simrs/waGateway/wa">Login</a>
+                            </li>
+                            <li>
+                                <a href="/simrs/waGetway/Dashboard">Dashboard</a>
                             </li>
                         </ul>
                     </div>

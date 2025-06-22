@@ -69,14 +69,13 @@
                 <div class="card-body d-flex flex-column h-100 gap-3">
 
                     <!-- Logo -->
-                    <div class="auth-brand text-center text-lg-start">
-                        <a href="index.html" class="logo-dark">
-                            <span><img src="{{ asset("dist/assets/images/logo-dark.png") }}" alt="dark logo"
-                                    height="24"></span>
-                        </a>
-                        <a href="index.html" class="logo-light">
-                            <span><img src="{{ asset("dist/assets/images/logo.png") }}" alt="logo"
-                                    height="24"></span>
+                    <div class="auth-brand text-center text-lg-start d-flex align-items-center">
+                        <a href="index.html" class="logo-dark d-flex align-items-center">
+                            <span>
+                                <img src="{{ asset("dist/assets/images/logoArsy.png") }}" alt="dark logo"
+                                    height="60">
+                            </span>
+                            <span class="ms-2 h4 mb-0 text-dark d-none d-lg-inline">SIMRS ARSY</span>
                         </a>
                     </div>
 
