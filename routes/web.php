@@ -60,6 +60,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/waGetway/belum', [DashboardWaController::class, 'widgetBelum']);
         Route::get('/waGetway/batal', [DashboardWaController::class, 'widgetBatal']);
         Route::get('/waGetway/tabledata', [DashboardWaController::class, 'tabelData']);
+        Route::get('/waGetway/LaporanWa', [DashboardWaController::class, 'laporanWa']);
+        Route::get('/waGetway/log/{id}', [DashboardWaController::class, 'detailLog']);
 
         // Display Poli
         Route::get('/display/poli', [PoliController::class, 'index'])->name('display.poli');

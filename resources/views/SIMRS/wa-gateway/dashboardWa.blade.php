@@ -1,7 +1,7 @@
 @extends("template.partials._app")
 
 @section("styles")
-    @include("template.plugins.dataTables")
+    {{-- @include("template.plugins.dataTables") --}}
     @include("template.plugins.select2")
 @endsection
 
@@ -33,7 +33,7 @@
                             <p class="mb-0 text-muted text-truncate d-flex align-items-center gap-1">
                                 <span id="growthBadge" class="badge bg-success me-1 d-flex align-items-center">
                                     <i id="growthIcon" class="ri-arrow-up-line me-1"></i>
-                                    <span id="growthValue">0</span>%
+                                    <span id="growthValue">0</span>
                                 </span>
                                 <span id="lastMonthBadge" class="badge bg-secondary">
                                     Bulan Lalu: <span id="lastMonthTerkirim">0</span>
@@ -171,34 +171,27 @@
     </div> <!-- end row -->
 
     <div class="row">
-        <div class="col-12">
-            <div class="card">
+        <div class="col-md-12">
+            <div class="card text-center shadow-sm hover-shadow border-0">
                 <div class="card-body">
-                    <br>
-                    <h4 class="header-title">Data Wa Gateway</h4>
-                    <!-- Tambahkan table-responsive agar tabel bisa di-scroll jika lebarnya lebih besar dari layar -->
-                    <div class="table-responsive">
-                        <table id="fixed-header-datatable" class="table table-striped dt-responsive nowrap w-100">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>No Rawat</th>
-                                    <th>No RM</th>
-                                    <th>Nama</th>
-                                    <th>Tgl Wa</th>
-                                    <th>No Wa</th>
-                                    <th>Wa Status</th>
-                                    <th>Status Pesan</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div> <!-- end card body-->
-            </div> <!-- end card -->
-        </div><!-- end col-->
-    </div> <!-- end row-->
-    <!-- end row -->
+                    <i class="ri-file-list-3-line fs-2 text-primary mb-2"></i>
+                    <h5 class="card-title mb-1">Daftar Wa</h5>
+                    <p class="text-muted mb-2">Lihat Data Wa</p>
+                    <a href="/simrs/waGetway/LaporanWa" class="btn btn-sm btn-outline-primary">Lihat</a>
+                </div>
+            </div>
+        </div>
+        {{-- <div class="col-md-6">
+            <div class="card text-center shadow-sm hover-shadow border-0">
+                <div class="card-body">
+                    <i class="ri-time-line fs-2 text-warning mb-2"></i>
+                    <h5 class="card-title mb-1">Log WA GAteway</h5>
+                    <p class="text-muted mb-2">Lihat Data Log Wa Gateway</p>
+                    <a href="#" class="btn btn-sm btn-outline-warning">Lihat</a>
+                </div>
+            </div>
+        </div> --}}
+    </div>
 
 @endsection
 

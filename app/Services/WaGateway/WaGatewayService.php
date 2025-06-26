@@ -18,4 +18,9 @@ class WaGatewayService
     {
         return $this->WaGatewayRepository->getWaTerkirim();
     }
+
+    public function LogWa($id)
+    {
+        return $this->WaGatewayRepository->LogWa($id);
+    }
 }

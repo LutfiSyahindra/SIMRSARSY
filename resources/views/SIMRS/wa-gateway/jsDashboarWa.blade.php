@@ -117,11 +117,6 @@
                 }
             });
 
-        // Update data tabel
-        if (dataTableInstance) {
-            const newUrl = `/simrs/waGetway/tabledata${query}`;
-            dataTableInstance.ajax.url(newUrl).load();
-        }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -133,68 +128,6 @@
             }
         }, function(start, end) {
             fetchWidgetData(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-        });
-
-        // 🛠 Destroy DataTable jika sudah ada sebelumnya
-        if ($.fn.DataTable.isDataTable('#fixed-header-datatable')) {
-            console.log('Destroying existing DataTable...');
-            $('#fixed-header-datatable').DataTable().clear().destroy();
-        }
-
-        // ✅ Inisialisasi ulang DataTable
-        console.log('Initializing DataTable...');
-        dataTableInstance = $('#fixed-header-datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '/simrs/waGetway/tabledata',
-                data: function(d) {
-                    const range = $('#dashboardDateRange').data('daterangepicker');
-                    d.start = range.startDate.format('YYYY-MM-DD');
-                    d.end = range.endDate.format('YYYY-MM-DD');
-                }
-            },
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'no_rawat',
-                    name: 'no_rawat'
-                },
-                {
-                    data: 'no_rm',
-                    name: 'no_rm'
-                },
-                {
-                    data: 'nama',
-                    name: 'nama'
-                },
-                {
-                    data: 'tgl_wa',
-                    name: 'tgl_wa'
-                },
-                {
-                    data: 'no_telp',
-                    name: 'no_telp'
-                },
-                {
-                    data: 'wa_status',
-                    name: 'wa_status'
-                },
-                {
-                    data: 'status_send',
-                    name: 'status_send'
-                },
-                {
-                    data: 'actions',
-                    name: 'actions',
-                    orderable: false,
-                    searchable: false
-                }
-            ]
         });
 
         // Fetch awal saat halaman dimuat

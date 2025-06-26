@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\WaGateway\WaGatewayService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DashboardWaController extends Controller
 {
@@ -21,6 +22,10 @@ class DashboardWaController extends Controller
     public function index()
     {
         return view('SIMRS.wa-gateway.dashboardWa');
+    }
+
+    public function laporanWa(Request $request){
+        return view('SIMRS.wa-gateway.laporanWa');
     }
 
     public function widgetTerkirim(Request $request)
@@ -236,11 +241,14 @@ class DashboardWaController extends Controller
 
     public function tabelData(Request $request)
     {
-        $start = $request->start ? Carbon::parse($request->start)->startOfDay() : Carbon::now()->startOfMonth();
-        $end = $request->end ? Carbon::parse($request->end)->endOfDay() : Carbon::now()->endOfMonth();
+        $start = $request->start_date ? Carbon::parse($request->start_date)->startOfDay() : Carbon::now()->startOfMonth();
+        $end = $request->end_date ? Carbon::parse($request->end_date)->endOfDay() : Carbon::now()->endOfMonth();
+
+        Log::info("Start: $start, End: $end");
 
         $data = $this->WaGatewayService->getWaTerkirim()
         ->select([
+            'id',
             'no_rawat',
             'no_rm',
             'nama',
@@ -256,10 +264,19 @@ class DashboardWaController extends Controller
         return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('actions', function ($row) {
-                return '<button class="btn btn-sm btn-primary">Detail</button>';
+                return '<button class="btn btn-sm btn-primary" onclick="detailLog(' . $row['id'] . ')">Detail</button>';
             })
             ->rawColumns(['actions'])
             ->make(true);
+    }
+
+    public function detailLog($id)
+    {
+        $data = $this->WaGatewayService->LogWa($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $data,
+        ]);
     }
 
 
