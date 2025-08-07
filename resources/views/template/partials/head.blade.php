@@ -26,3 +26,9 @@
     <!-- Icons css -->
     <link href="{{ asset("dist/assets/css/icons.min.css") }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+
+    <!-- PWA manifest dan theme-color -->
+
+    @vite(["resources/js/pwa.js"])
+    <link rel="manifest" href="{{ asset("build/manifest.webmanifest") }}">
+    <meta name="theme-color" content="#0d6efd">
