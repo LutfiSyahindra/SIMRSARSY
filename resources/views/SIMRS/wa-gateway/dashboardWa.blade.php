@@ -1,7 +1,7 @@
 @extends("template.partials._app")
 
 @section("styles")
-    {{-- @include("template.plugins.dataTables") --}}
+    @include("template.plugins.dataTables")
     @include("template.plugins.select2")
 @endsection
 

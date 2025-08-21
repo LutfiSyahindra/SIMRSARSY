@@ -15,6 +15,9 @@ use App\Http\Controllers\simrs\It\ItController;
 use App\Http\Controllers\simrs\PetugasPanggil\kasirPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\pippPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\poliPanggilController;
+use App\Http\Controllers\simrs\Surat\MasterSuratController;
+use App\Http\Controllers\simrs\Surat\SuratMasukController;
+use App\Http\Controllers\simrs\taskId\taskIdController;
 use App\Http\Controllers\simrs\Users\permissionsController;
 use App\Http\Controllers\simrs\Users\rolesController;
 use App\Http\Controllers\simrs\Users\UsersController;
@@ -144,6 +147,38 @@ Route::middleware('auth')->group(function () {
         Route::get('/khususIt/widget/pengaduan', [ItController::class, 'widgetPengaduan'])->name('khususIt.widget.pengaduan');
         Route::get('/khususIt/widget/restime', [ItController::class, 'widgetAverageResponseTime'])->name('khususIt.widget.restime');
         Route::get('/khususIt/widget/donetime', [ItController::class, 'widgetAverageCompletionTime'])->name('khususIt.widget.donetime');
+
+        // TaskId
+        Route::get('/taskId/index', [taskIdController::class, 'index'])->name('taskId.index');
+        Route::get('/taskId/table', [TaskIdController::class, 'listTaskId'])->name('taskId.table');
+        Route::get('/taskId/getTaskId', [TaskIdController::class, 'getTaskId'])->name('taskId.getTaskId');
+        Route::get('/taskId/rataAdmisi', [TaskIdController::class, 'rataAdmisi'])->name('taskId.rataAdmisi');
+        Route::get('/taskId/rataPoli', [TaskIdController::class, 'rataPoli'])->name('taskId.rataPoli');
+        Route::get('/taskId/rataFarmasi', [TaskIdController::class, 'rataFarmasi'])->name('taskId.rataFarmasi');
+        Route::get('/taskId/dataTaskId', [TaskIdController::class, 'dataTaskId'])->name('taskId.dataTaskId');
+        Route::get('/taskId/detailTaskid', [TaskIdController::class, 'detailTaskid'])->name('taskId.detailTaskid');
+        Route::get('/taskId/taskIdOnsite', [TaskIdController::class, 'taskIdOnsite'])->name('taskId.taskIdOnsite');
+        Route::get('/taskId/taskIdMjkn', [TaskIdController::class, 'taskIdMjkn'])->name('taskId.taskIdMjkn');
+        // Route::post('/taskId/store', [TaskIdController::class, 'store'])->name('taskId.store');
+        // Route::get('/taskId/{id}/edit', [TaskIdController::class, 'edit'])->name('taskId.edit');
+        // Route::put('/taskId/{id}/update', [TaskIdController::class, 'update'])->name('taskId.update');
+        // Route::delete('/taskId/{id}/delete', [TaskIdController::class, 'destroy'])->name('taskId.delete');
+
+        // Surat SDI
+        Route::get('/surat/kategori/index', [MasterSuratController::class, 'index'])->name('surat.kategori.index');
+        Route::get('/surat/kategori/table', [MasterSuratController::class, 'table'])->name('surat.kategori.table');
+        Route::post('/surat/kategori/store', [MasterSuratController::class, 'store'])->name('surat.kategori.store');
+        Route::get('/surat/kategori/{id}/edit', [MasterSuratController::class, 'edit'])->name('surat.kategori.edit');
+        Route::put('/surat/kategori/{id}/update', [MasterSuratController::class, 'update'])->name('surat.kategori.update');
+        Route::delete('/surat/kategori/{id}/destroy', [MasterSuratController::class, 'destroy'])->name('surat.kategori.destroy');
+
+        // Surat Masuk SDI
+        Route::get('/surat/masuk/index', [SuratMasukController::class, 'index'])->name('surat.masuk.index');
+        Route::get('/surat/masuk/table', [SuratMasukController::class, 'table'])->name('surat.masuk.table');
+        Route::post('/surat/masuk/store', [SuratMasukController::class, 'store'])->name('surat.masuk.store');
+        Route::get('/surat/masuk/{id}/edit', [SuratMasukController::class, 'edit'])->name('surat.masuk.edit');
+        Route::put('/surat/masuk/{id}/update', [SuratMasukController::class, 'update'])->name('surat.masuk.update');
+        Route::delete('/surat/masuk/{id}/destroy', [SuratMasukController::class, 'destroy'])->name('surat.masuk.destroy');
 
     });
 

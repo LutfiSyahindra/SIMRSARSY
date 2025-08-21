@@ -49,6 +49,35 @@
         <!-- END wrapper -->
 
         @include("template.partials.js")
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                function closeSidebar() {
+                    document.body.classList.remove('sidebar-enable');
+                    document.querySelectorAll('.leftside-menu-bg, .sidebar-overlay, .offcanvas-backdrop')
+                        .forEach(el => el.remove());
+                }
+
+                // Klik tombol X
+                document.querySelectorAll('.button-close-fullsidebar').forEach(btn => {
+                    btn.addEventListener('click', closeSidebar);
+                });
+
+                // Klik menu
+                document.querySelectorAll('.side-nav-link').forEach(link => {
+                    link.addEventListener('click', closeSidebar);
+                });
+
+                // Klik overlay (area gelap)
+                document.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('leftside-menu-bg') ||
+                        e.target.classList.contains('sidebar-overlay') ||
+                        e.target.classList.contains('offcanvas-backdrop')) {
+                        closeSidebar();
+                    }
+                });
+            });
+        </script>
+
         @yield("scripts")
 
     </body>

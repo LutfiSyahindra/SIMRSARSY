@@ -1,15 +1,5 @@
 <div class="leftside-menu">
 
-    <!-- Brand Logo Light -->
-    {{-- <a href="index.html" class="logo logo-light">
-        <span class="logo-lg">
-            <img src="{{ asset("dist/assets/images/logoArsy.png") }}" alt="logo">
-        </span>
-        <span class="logo-sm">
-            <img src="{{ asset("dist/assets/images/logoArsy.png") }}" alt="small logo">
-        </span>
-    </a> --}}
-
     <!-- Brand Logo Dark -->
     <a href="index.html" class="logo logo-dark">
         <span>
@@ -53,14 +43,33 @@
         <!--- Sidemenu -->
         <ul class="side-nav">
 
-            <li class="side-nav-title mt-1"> Main</li>
-
             <li class="side-nav-item">
                 <a href="index.html" class="side-nav-link">
                     <i class="ri-dashboard-2-fill"></i>
                     <span class="badge bg-success float-end">9+</span>
                     <span> Dashboard </span>
                 </a>
+            </li>
+
+            <li class="side-nav-title mt-1">
+                <h6>Setting</h6>
+            </li>
+
+            {{-- Master Data --}}
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#masterData" aria-expanded="false" aria-controls="masterData"
+                    class="side-nav-link">
+                    <i class="ri-database-2-line"></i> <!-- icon diganti jadi surat -->
+                    <span>Master Data SDI</span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="masterData">
+                    <ul class="side-nav-second-level">
+                        <li>
+                            <a href="/simrs/surat/kategori/index">Kategori Surat</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
             {{-- Users --}}
@@ -88,6 +97,9 @@
                 </li>
             @endcan
 
+            <li class="side-nav-title mt-1">
+                <h6>Pelayanan</h6>
+            </li>
             {{-- display --}}
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarEmail" aria-expanded="false" aria-controls="sidebarEmail"
@@ -166,44 +178,102 @@
                 </div>
             </li>
 
-            {{-- wa gateway --}}
-            @can("SIMRS.WA_GATEWAY")
+            @can("SIMRS.KHUSUS_IT")
+                <li class="side-nav-title mt-1">
+                    <h6>Maintenance & IT</h6>
+                </li>
+
+                {{-- wa gateway --}}
+                @can("SIMRS.WA_GATEWAY")
+                    <li class="side-nav-item">
+                        <a data-bs-toggle="collapse" href="#waGateway" aria-expanded="false" aria-controls="waGateway"
+                            class="side-nav-link">
+                            <i class="ri-whatsapp-fill"></i>
+                            <span> Wa-Gateway </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="waGateway">
+                            <ul class="side-nav-second-level">
+                                <li>
+                                    <a href="/simrs/waGateway/wa">Login</a>
+                                </li>
+                                <li>
+                                    <a href="/simrs/waGetway/Dashboard">Dashboard</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endcan
+
+                {{-- It --}}
                 <li class="side-nav-item">
-                    <a data-bs-toggle="collapse" href="#waGateway" aria-expanded="false" aria-controls="waGateway"
+                    <a data-bs-toggle="collapse" href="#khususIt" aria-expanded="false" aria-controls="khususIt"
                         class="side-nav-link">
-                        <i class="ri-whatsapp-fill"></i>
-                        <span> Wa-Gateway </span>
+                        <i class="ri-computer-line"></i> <!-- ganti icon di sini -->
+                        <span> IT </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="waGateway">
+                    <div class="collapse" id="khususIt">
                         <ul class="side-nav-second-level">
                             <li>
-                                <a href="/simrs/waGateway/wa">Login</a>
+                                <a href="/simrs/khususIt/index">Dashboard</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                {{-- Dashbord Task ID --}}
+                <li class="side-nav-item">
+                    <a href="/simrs/taskId/index" class="side-nav-link">
+                        <i class="ri-task-fill"></i>
+                        <span>Task ID</span>
+                    </a>
+                </li>
+            @endcan
+
+            @can("SIMRS.SDI")
+                <li class="side-nav-title mt-1">
+                    <h6>SDI</h6>
+                </li>
+
+                <li class="side-nav-item">
+                    <a data-bs-toggle="collapse" href="#sdi" aria-expanded="false" aria-controls="sdi"
+                        class="side-nav-link">
+                        <i class="ri-file-text-line"></i> <!-- icon diganti jadi surat -->
+                        <span>Disposisi</span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sdi">
+                        <ul class="side-nav-second-level">
+                            <li>
+                                <a href="/simrs/khususIt/index">Disposisi</a>
                             </li>
                             <li>
-                                <a href="/simrs/waGetway/Dashboard">Dashboard</a>
+                                <a href="/simrs/khususIt/index">Riwayat Disposisi</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="side-nav-item">
+                    <a data-bs-toggle="collapse" href="#surat" aria-expanded="false" aria-controls="surat"
+                        class="side-nav-link">
+                        <i class="ri-mail-line"></i> <!-- icon diganti jadi surat -->
+                        <span>Surat</span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="surat">
+                        <ul class="side-nav-second-level">
+                            <li>
+                                <a href="/simrs/surat/masuk/index">Surat Masuk</a>
+                            </li>
+                            <li>
+                                <a href="/simrs/khususIt/index">Surat Keluar</a>
                             </li>
                         </ul>
                     </div>
                 </li>
             @endcan
-
-            {{-- It --}}
-            <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#khususIt" aria-expanded="false" aria-controls="khususIt"
-                    class="side-nav-link">
-                    <i class="ri-computer-line"></i> <!-- ganti icon di sini -->
-                    <span> IT </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="khususIt">
-                    <ul class="side-nav-second-level">
-                        <li>
-                            <a href="/simrs/khususIt/index">Dashboard</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
 
         </ul>
         <!--- End Sidemenu -->
