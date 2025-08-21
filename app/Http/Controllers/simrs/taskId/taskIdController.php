@@ -50,7 +50,7 @@ class taskIdController extends Controller
         ->whereBetween(DB::raw("rp.tgl_registrasi"), [$startReg, $endReg])
         ->whereNotIn('rp.no_rawat', function($query) {
             $query->select('no_rawat')
-                ->from('log_taskId');
+                ->from('log_taskid');
         })
         ->whereNotIn('rp.no_rawat', function($query) {
             $query->select('no_rawat')
@@ -75,7 +75,7 @@ class taskIdController extends Controller
         ->whereBetween(DB::raw("rp.tgl_registrasi"), [$startReg, $endReg])
         ->whereNotIn('rp.no_rawat', function($query) {
             $query->select('no_rawat')
-                ->from('log_taskId');
+                ->from('log_taskid');
         })
         ->whereIn('rp.no_rawat', function($query) {
             $query->select('no_rawat')
@@ -430,10 +430,17 @@ class taskIdController extends Controller
                 ->join('reg_periksa', 'reg_periksa.no_rawat', '=', 'log_taskid.no_rawat')
                 ->join('poliklinik', 'poliklinik.kd_poli', '=', 'reg_periksa.kd_poli')
                 ->join('pasien', 'pasien.no_rkm_medis', '=', 'reg_periksa.no_rkm_medis')
-                ->select(DB::raw("LEFT(log_taskid.no_rawat, 10) as tanggal"), 'log_taskId.no_rawat', 'reg_periksa.no_rkm_medis', 'reg_periksa.kd_poli', 'poliklinik.nm_poli', 'pasien.nm_pasien')
+                ->select(DB::raw("LEFT(log_taskid.no_rawat, 10) as tanggal"), 'log_taskid.no_rawat', 'reg_periksa.no_rkm_medis', 'reg_periksa.kd_poli', 'poliklinik.nm_poli', 'pasien.nm_pasien')
                 ->whereBetween(DB::raw("LEFT(log_taskid.no_rawat, 10)"), [$start, $end])
                 ->where ('status_daftar', 'Onsite')
-                ->groupBy('tanggal', 'log_taskid.no_rawat') // grup berdasarkan tanggal + no_rawat
+                ->groupBy(
+                    'tanggal',
+                    'log_taskid.no_rawat',
+                    'reg_periksa.no_rkm_medis',
+                    'reg_periksa.kd_poli',
+                    'poliklinik.nm_poli',
+                    'pasien.nm_pasien'
+                )
                 ->get();
             }else{
                  // Belum Terkirim   
@@ -445,7 +452,7 @@ class taskIdController extends Controller
                 ->whereBetween(DB::raw("rp.tgl_registrasi"), [$startReg, $endReg])
                 ->whereNotIn('rp.no_rawat', function($query) {
                     $query->select('no_rawat')
-                        ->from('log_taskId');
+                        ->from('log_taskid');
                 })
                 ->whereNotIn('rp.no_rawat', function($query) {
                     $query->select('no_rawat')
@@ -480,10 +487,17 @@ class taskIdController extends Controller
                 ->join('reg_periksa', 'reg_periksa.no_rawat', '=', 'log_taskid.no_rawat')
                 ->join('poliklinik', 'poliklinik.kd_poli', '=', 'reg_periksa.kd_poli')
                 ->join('pasien', 'pasien.no_rkm_medis', '=', 'reg_periksa.no_rkm_medis')
-                ->select(DB::raw("LEFT(log_taskid.no_rawat, 10) as tanggal"), 'log_taskId.no_rawat', 'reg_periksa.no_rkm_medis', 'reg_periksa.kd_poli', 'poliklinik.nm_poli', 'pasien.nm_pasien')
+                ->select(DB::raw("LEFT(log_taskid.no_rawat, 10) as tanggal"), 'log_taskid.no_rawat', 'reg_periksa.no_rkm_medis', 'reg_periksa.kd_poli', 'poliklinik.nm_poli', 'pasien.nm_pasien')
                 ->whereBetween(DB::raw("LEFT(log_taskid.no_rawat, 10)"), [$start, $end])
                 ->where ('status_daftar', 'MJKN')
-                ->groupBy('tanggal', 'log_taskid.no_rawat') // grup berdasarkan tanggal + no_rawat
+                ->groupBy(
+                    'tanggal',
+                    'log_taskid.no_rawat',
+                    'reg_periksa.no_rkm_medis',
+                    'reg_periksa.kd_poli',
+                    'poliklinik.nm_poli',
+                    'pasien.nm_pasien'
+                ) // grup berdasarkan tanggal + no_rawat
                 ->get();
             }else{
                  // Belum Terkirim   
@@ -495,7 +509,7 @@ class taskIdController extends Controller
                 ->whereBetween(DB::raw("rp.tgl_registrasi"), [$startReg, $endReg])
                 ->whereNotIn('rp.no_rawat', function($query) {
                 $query->select('no_rawat')
-                    ->from('log_taskId');
+                    ->from('log_taskid');
                 })
                 ->whereIn('rp.no_rawat', function($query) {
                     $query->select('no_rawat')
