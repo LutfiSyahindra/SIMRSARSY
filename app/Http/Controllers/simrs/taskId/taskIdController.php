@@ -69,20 +69,17 @@ class taskIdController extends Controller
             ->count();
         
         //Jkn Belum
-        $JKNbelumTerkirim = DB::connection('mysql_khanza')
-        ->table('reg_periksa as rp')
-        ->select('rp.no_rawat')
-        ->whereBetween(DB::raw("rp.tgl_registrasi"), [$startReg, $endReg])
-        ->whereNotIn('rp.no_rawat', function($query) {
-            $query->select('no_rawat')
-                ->from('log_taskid');
-        })
-        ->whereIn('rp.no_rawat', function($query) {
-            $query->select('no_rawat')
-                ->from('referensi_mobilejkn_bpjs');
-        })
-        ->distinct()
-        ->count();
+$JKNbelumTerkirim = DB::connection('mysql_khanza')
+    ->table('reg_periksa as rp')
+    ->join('referensi_mobilejkn_bpjs as jkn', 'rp.no_rawat', '=', 'jkn.no_rawat')
+    ->whereBetween('rp.tgl_registrasi', [$startReg, $endReg])
+    ->where('jkn.status', '!=', 'batal')
+    ->whereNotIn('rp.no_rawat', function($query) {
+        $query->select('no_rawat')->from('log_taskid');
+    })
+    ->distinct()
+    ->count();
+
 
         // Hitung total rata-rata waktu per no_rawat (taskid terkecil > 0 → taskid terbesar > 0)
         $avgMinutes = DB::connection('mysql_khanza')
@@ -404,7 +401,7 @@ class taskIdController extends Controller
             $totalWaktu = $akhir->diff($awal)->format('%H:%I:%S');
         }
 
-        Log::info($totalWaktu);
+        Log::info($detail);
 
         return DataTables::of($dataDetail)
             ->addIndexColumn()
