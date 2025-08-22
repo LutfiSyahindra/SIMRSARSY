@@ -8,6 +8,7 @@
 @section("content")
     @include("SIMRS.taskId.modalOnsite")
     @include("SIMRS.taskId.modalMjkn")
+    @include("SIMRS.taskId.modalDetail")
     <div class="row">
         <div class="col-12">
             <div class="page-title-box justify-content-between d-flex align-items-lg-center flex-lg-row flex-column">

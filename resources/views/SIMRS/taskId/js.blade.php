@@ -13,8 +13,8 @@
                         url: '/simrs/taskId/taskIdOnsite',
                         data: function(d) {
                             const range = $('#taskIdDateRange').data('daterangepicker');
-                            d.start = range.startDate.format('YYYY-MM-DD');
-                            d.end = range.endDate.format('YYYY-MM-DD');
+                            d.start_date = range.startDate.format('YYYY-MM-DD');
+                            d.end_date = range.endDate.format('YYYY-MM-DD');
                             d.status = 'terkirim';
                         }
                     },
@@ -36,6 +36,11 @@
                         {
                             data: 'nm_poli',
                             name: 'nm_poli'
+                        },
+                        {
+                            data: 'action',
+                            orderable: false,
+                            searchable: false
                         }
                     ]
                 });
@@ -50,8 +55,8 @@
                         url: '/simrs/taskId/taskIdOnsite',
                         data: function(d) {
                             const range = $('#taskIdDateRange').data('daterangepicker');
-                            d.start = range.startDate.format('YYYY-MM-DD');
-                            d.end = range.endDate.format('YYYY-MM-DD');
+                            d.start_date = range.startDate.format('YYYY-MM-DD');
+                            d.end_date = range.endDate.format('YYYY-MM-DD');
                             d.status = 'belum';
                         }
                     },
@@ -73,6 +78,11 @@
                         {
                             data: 'nm_poli',
                             name: 'nm_poli'
+                        },
+                        {
+                            data: 'action',
+                            orderable: false,
+                            searchable: false
                         }
                     ]
                 });
@@ -90,8 +100,8 @@
                         url: '/simrs/taskId/taskIdMjkn',
                         data: function(d) {
                             const range = $('#taskIdDateRange').data('daterangepicker');
-                            d.start = range.startDate.format('YYYY-MM-DD');
-                            d.end = range.endDate.format('YYYY-MM-DD');
+                            d.start_date = range.startDate.format('YYYY-MM-DD');
+                            d.end_date = range.endDate.format('YYYY-MM-DD');
                             d.status = 'terkirim';
                         }
                     },
@@ -113,6 +123,11 @@
                         {
                             data: 'nm_poli',
                             name: 'nm_poli'
+                        },
+                        {
+                            data: 'action',
+                            orderable: false,
+                            searchable: false
                         }
                     ]
                 });
@@ -127,8 +142,8 @@
                         url: '/simrs/taskId/taskIdMjkn',
                         data: function(d) {
                             const range = $('#taskIdDateRange').data('daterangepicker');
-                            d.start = range.startDate.format('YYYY-MM-DD');
-                            d.end = range.endDate.format('YYYY-MM-DD');
+                            d.start_date = range.startDate.format('YYYY-MM-DD');
+                            d.end_date = range.endDate.format('YYYY-MM-DD');
                             d.status = 'belum';
                         }
                     },
@@ -150,6 +165,11 @@
                         {
                             data: 'nm_poli',
                             name: 'nm_poli'
+                        },
+                        {
+                            data: 'action',
+                            orderable: false,
+                            searchable: false
                         }
                     ]
                 });
@@ -198,6 +218,82 @@
                     document.getElementById('layananFarmasi').innerText = data.totalRataLayananFarmasi;
                 }
             });
+    }
+
+    window.detailOnsite = function(id) {
+        console.log('id', id);
+        const modal = $('#log-taskid-modal');
+        modal.modal('show');
+
+        let usersTable = $('#TaskIdLogTable').DataTable({
+            destroy: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route("taskId.detailTaskid") }}", // Sesuaikan dengan route Anda
+                type: "GET",
+                data: {
+                    no_rawat: id
+                }
+            },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'no_rawat',
+                    name: 'no_rawat'
+                },
+                {
+                    data: 'taskid',
+                    name: 'taskid'
+                },
+                {
+                    data: 'waktu',
+                    name: 'waktu'
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    render: function(data, type, row) {
+                        if (data == 200) {
+                            return `<span class="badge bg-success">200</span>`;
+                        } else {
+                            return `<span class="badge bg-danger">${data ?? '-'}</span>`;
+                        }
+                    }
+                },
+                {
+                    data: 'log',
+                    name: 'log'
+                },
+            ],
+            footerCallback: function(row, data, start, end, display) {
+                let api = this.api();
+
+                // Ambil total waktu dari response tambahan
+                let json = api.ajax.json();
+                if (json && json.total_waktu) {
+                    // tampilkan
+                    $('#totalWaktu').html(json.total_waktu);
+
+                    // cek apakah < 3 jam
+                    let parts = json.total_waktu.split(':'); // [HH, MM, SS]
+                    let jam = parseInt(parts[0], 10);
+
+                    if (jam < 3) {
+                        $('#totalWaktu').css('color', 'green');
+                    } else {
+                        $('#totalWaktu').css('color', 'red');
+                    }
+                } else {
+                    $('#totalWaktu').html("-").css('color', '');
+                }
+            }
+
+        });
     }
 
     document.addEventListener('DOMContentLoaded', function() {

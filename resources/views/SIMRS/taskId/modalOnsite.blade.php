@@ -40,6 +40,7 @@
                                         <th>No Rawat</th>
                                         <th>Nama</th>
                                         <th>Poli</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -56,6 +57,7 @@
                                         <th>No Rawat</th>
                                         <th>Nama</th>
                                         <th>Poli</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                             </table>

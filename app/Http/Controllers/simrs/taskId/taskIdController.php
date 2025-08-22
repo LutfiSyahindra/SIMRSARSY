@@ -69,16 +69,16 @@ class taskIdController extends Controller
             ->count();
         
         //Jkn Belum
-$JKNbelumTerkirim = DB::connection('mysql_khanza')
-    ->table('reg_periksa as rp')
-    ->join('referensi_mobilejkn_bpjs as jkn', 'rp.no_rawat', '=', 'jkn.no_rawat')
-    ->whereBetween('rp.tgl_registrasi', [$startReg, $endReg])
-    ->where('jkn.status', '!=', 'batal')
-    ->whereNotIn('rp.no_rawat', function($query) {
-        $query->select('no_rawat')->from('log_taskid');
-    })
-    ->distinct()
-    ->count();
+        $JKNbelumTerkirim = DB::connection('mysql_khanza')
+            ->table('reg_periksa as rp')
+            ->join('referensi_mobilejkn_bpjs as jkn', 'rp.no_rawat', '=', 'jkn.no_rawat')
+            ->whereBetween('rp.tgl_registrasi', [$startReg, $endReg])
+            ->where('jkn.status', '!=', 'batal')
+            ->whereNotIn('rp.no_rawat', function($query) {
+                $query->select('no_rawat')->from('log_taskid');
+            })
+            ->distinct()
+            ->count();
 
 
         // Hitung total rata-rata waktu per no_rawat (taskid terkecil > 0 → taskid terbesar > 0)
@@ -411,12 +411,12 @@ $JKNbelumTerkirim = DB::connection('mysql_khanza')
 
     public function taskIdOnsite(Request $request)
     {
-            $startReg = $request->start;
-            $endReg   = $request->end;
+            $startReg = $request->start_date;
+            $endReg   = $request->end_date;
 
             // Normalisasi format dari 2025-08-14 -> 2025/08/14
-            $start = str_replace('-', '/', $request->start);
-            $end   = str_replace('-', '/', $request->end);
+            $start = str_replace('-', '/', $request->start_date);
+            $end   = str_replace('-', '/', $request->end_date);
 
             $status = $request->status;
 
@@ -462,18 +462,22 @@ $JKNbelumTerkirim = DB::connection('mysql_khanza')
             Log::info("belum:". $dataOnsite);
 
                 return DataTables::of($dataOnsite)
-                ->addIndexColumn() // ini biar keluar DT_RowIndex
+                ->addIndexColumn() // ini biar keluar DT_RowIndex\
+                ->addColumn('action', function ($row) {
+                    return '<button class="btn btn-sm btn-primary" onclick="detailOnsite(\'' . $row->no_rawat . '\')">Detail</button>';
+                })
+                ->rawColumns(['action'])
                 ->make(true);
     }
 
     public function taskIdMjkn(Request $request)
     {
-            $startReg = $request->start;
-            $endReg   = $request->end;
+            $startReg = $request->start_date;
+            $endReg   = $request->end_date;
 
             // Normalisasi format dari 2025-08-14 -> 2025/08/14
-            $start = str_replace('-', '/', $request->start);
-            $end   = str_replace('-', '/', $request->end);
+            $start = str_replace('-', '/', $request->start_date);
+            $end   = str_replace('-', '/', $request->end_date);
 
             $status = $request->status;
 
@@ -520,6 +524,10 @@ $JKNbelumTerkirim = DB::connection('mysql_khanza')
 
                 return DataTables::of($dataMjkn)
                 ->addIndexColumn() // ini biar keluar DT_RowIndex
+                ->addColumn('action', function ($row) {
+                    return '<button class="btn btn-sm btn-primary" onclick="detailOnsite(\'' . $row->no_rawat . '\')">Detail</button>';
+                })
+                ->rawColumns(['action'])
                 ->make(true);
     }
 

@@ -67,10 +67,9 @@
         });
     }
 
-
     // 👇 Fungsi untuk menampilkan detail user
     window.detailTaskid = function(no_rawat) {
-        const modal = $('#info-header-modal');
+        const modal = $('#log-taskid-modal');
         modal.modal('show');
 
         let usersTable = $('#TaskIdLogTable').DataTable({
