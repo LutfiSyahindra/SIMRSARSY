@@ -38,6 +38,26 @@
                             name: 'nm_poli'
                         },
                         {
+                            data: 'status',
+                            name: 'status',
+                            render: function(data, type, row) {
+                                if (data === 'Success') {
+                                    return '<a href="#" class="status-badge text-decoration-none" data-no_rawat="' +
+                                        row.no_rawat + '" data-status="' + data + '">' +
+                                        '<span class="badge bg-success"><i class="bi bi-check-circle"></i> ' +
+                                        data + '</span>' +
+                                        '</a>';
+                                } else if (data === 'Warning') {
+                                    return '<a href="#" class="status-badge text-decoration-none" data-no_rawat="' +
+                                        row.no_rawat + '" data-status="' + data + '">' +
+                                        '<span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle"></i> ' +
+                                        data + '</span>' +
+                                        '</a>';
+                                } else {
+                                    return data;
+                                }
+                            }
+                        }, {
                             data: 'action',
                             orderable: false,
                             searchable: false
@@ -123,6 +143,27 @@
                         {
                             data: 'nm_poli',
                             name: 'nm_poli'
+                        },
+                        {
+                            data: 'status',
+                            name: 'status',
+                            render: function(data, type, row) {
+                                if (data === 'Success') {
+                                    return '<a href="#" class="status-badge text-decoration-none" data-no_rawat="' +
+                                        row.no_rawat + '" data-status="' + data + '">' +
+                                        '<span class="badge bg-success"><i class="bi bi-check-circle"></i> ' +
+                                        data + '</span>' +
+                                        '</a>';
+                                } else if (data === 'Warning') {
+                                    return '<a href="#" class="status-badge text-decoration-none" data-no_rawat="' +
+                                        row.no_rawat + '" data-status="' + data + '">' +
+                                        '<span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle"></i> ' +
+                                        data + '</span>' +
+                                        '</a>';
+                                } else {
+                                    return data;
+                                }
+                            }
                         },
                         {
                             data: 'action',
@@ -295,6 +336,118 @@
 
         });
     }
+
+    $(document).on('click', '.status-badge', function(e) {
+        e.preventDefault();
+
+        let noRawat = $(this).data('no_rawat');
+        let status = $(this).data('status');
+
+        if (status === 'Warning') {
+            const modal = $('#LogModal');
+            modal.modal('show');
+
+            // hancurkan instance lama agar tidak double
+            if ($.fn.DataTable.isDataTable('#LogTable')) {
+                $('#LogTable').DataTable().destroy();
+            }
+
+            // inisialisasi ulang DataTables
+            $('#LogTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '/simrs/taskId/logTaskId',
+                    data: function(d) {
+                        d.no_rawat = noRawat;
+                    }
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'no_rawat',
+                        name: 'no_rawat'
+                    },
+                    {
+                        data: 'task_id',
+                        name: 'task_id'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        render: function(data, type, row) {
+                            if (data == 200) {
+                                return `<span class="badge bg-success">200</span>`;
+                            } else {
+                                return `<span class="badge bg-danger">${data ?? '-'}</span>`;
+                            }
+                        }
+                    },
+                    {
+                        data: 'log',
+                        name: 'log'
+                    }
+                ]
+            });
+
+        } else {
+            const modal = $('#LogModal');
+            modal.modal('show');
+
+            // hancurkan instance lama agar tidak double
+            if ($.fn.DataTable.isDataTable('#LogTable')) {
+                $('#LogTable').DataTable().destroy();
+            }
+
+            // inisialisasi ulang DataTables
+            $('#LogTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '/simrs/taskId/logTaskId',
+                    data: function(d) {
+                        d.no_rawat = noRawat;
+                    }
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'no_rawat',
+                        name: 'no_rawat'
+                    },
+                    {
+                        data: 'task_id',
+                        name: 'task_id'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        render: function(data, type, row) {
+                            if (data == 200) {
+                                return `<span class="badge bg-success">200</span>`;
+                            } else {
+                                return `<span class="badge bg-danger">${data ?? '-'}</span>`;
+                            }
+                        }
+                    },
+                    {
+                        data: 'log',
+                        name: 'log'
+                    }
+                ]
+            });
+        }
+    });
+
+
 
     document.addEventListener('DOMContentLoaded', function() {
         $('#taskIdDateRange').daterangepicker({

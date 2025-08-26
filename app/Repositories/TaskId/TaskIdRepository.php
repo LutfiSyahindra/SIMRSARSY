@@ -19,6 +19,12 @@ class TaskIdRepository
     {
         return TaskIdModel::where('id', $id)->get();
     }
+    public function getLogTaskIdRw($no_rawat)
+    {
+        return TaskIdModel::where('no_rawat', $no_rawat)
+        ->orderBy('task_id', 'asc') // urut dari kecil ke besar
+        ->get();
+    }
     
 
 }

@@ -23,4 +23,9 @@ class TaskIdService
     {
         return $this->TaskIdRepository->getLogTaskId($id);
     }
+
+    public function getLogTaskIdRw($no_rawat)
+    {
+        return $this->TaskIdRepository->getLogTaskIdRw($no_rawat);
+    }
 }

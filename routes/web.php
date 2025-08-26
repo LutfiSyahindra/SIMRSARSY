@@ -159,6 +159,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/taskId/detailTaskid', [TaskIdController::class, 'detailTaskid'])->name('taskId.detailTaskid');
         Route::get('/taskId/taskIdOnsite', [TaskIdController::class, 'taskIdOnsite'])->name('taskId.taskIdOnsite');
         Route::get('/taskId/taskIdMjkn', [TaskIdController::class, 'taskIdMjkn'])->name('taskId.taskIdMjkn');
+        Route::get('/taskId/logTaskId', [TaskIdController::class, 'logTaskId'])->name('taskId.logTaskId');
+
         // Route::post('/taskId/store', [TaskIdController::class, 'store'])->name('taskId.store');
         // Route::get('/taskId/{id}/edit', [TaskIdController::class, 'edit'])->name('taskId.edit');
         // Route::put('/taskId/{id}/update', [TaskIdController::class, 'update'])->name('taskId.update');

@@ -37,6 +37,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>No Rawat</th>
+                                    <th>Nama</th>
                                     <th>Poli</th>
                                     <th>Tanggal</th>
                                     <th>Status</th>
@@ -46,6 +47,8 @@
                                     <th></th> <!-- No (tidak difilter) -->
                                     <th><input type="text" class="form-control form-control-sm filter-col"
                                             placeholder="Cari Rawat"></th>
+                                    <th><input type="text" class="form-control form-control-sm filter-col"
+                                            placeholder="Cari Nama"></th>
                                     <th><input type="text" class="form-control form-control-sm filter-col"
                                             placeholder="Cari Poli"></th>
                                     <th><input type="text" class="form-control form-control-sm filter-col"

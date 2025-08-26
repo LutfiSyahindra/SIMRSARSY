@@ -26,6 +26,10 @@
                     name: 'no_rawat'
                 },
                 {
+                    data: 'nm_pasien',
+                    name: 'nm_pasien'
+                },
+                {
                     data: 'nm_poli',
                     name: 'nm_poli'
                 },

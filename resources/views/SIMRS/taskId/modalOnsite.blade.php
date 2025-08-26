@@ -40,6 +40,7 @@
                                         <th>No Rawat</th>
                                         <th>Nama</th>
                                         <th>Poli</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>

@@ -321,12 +321,15 @@ class taskIdController extends Controller
             ->leftJoin('log_taskid as l', 't.no_rawat', '=', 'l.no_rawat')
             ->leftJoin('reg_periksa', 't.no_rawat', '=', 'reg_periksa.no_rawat')
             ->leftJoin('poliklinik', 'reg_periksa.kd_poli', '=', 'poliklinik.kd_poli')
+            ->leftJoin('pasien', 'reg_periksa.no_rkm_medis', '=', 'pasien.no_rkm_medis')
             ->select(
                 't.no_rawat',
                 DB::raw('DATE(t.waktu) as tanggal'),
                 'l.status_daftar as status',
                 'reg_periksa.no_rawat as reg_periksa_no_rawat',
                 'reg_periksa.kd_poli as reg_periksa_kd_poli',
+                'reg_periksa.no_rkm_medis as reg_periksa_no_rkm_medis',
+                'pasien.nm_pasien as nm_pasien',
                 'poliklinik.nm_poli as nm_poli'
             )
             ->whereBetween(DB::raw('DATE(t.waktu)'), [$startReg, $endReg])
@@ -340,6 +343,7 @@ class taskIdController extends Controller
                     'no_rawat' => $r->no_rawat,
                     'tanggal' => $r->tanggal,
                     'nm_poli' => $r->nm_poli,
+                    'nm_pasien' => $r->nm_pasien,
                     'status' => $r->status,
                 ];
             }
@@ -423,13 +427,65 @@ class taskIdController extends Controller
             Log::info("Start: $start, End: $end, StartReg: $startReg, EndReg: $endReg");
 
             if($status == 'terkirim') {
+                // $dataOnsite = $this->TaskIdService->getTaskId()
+                // ->join('reg_periksa', 'reg_periksa.no_rawat', '=', 'log_taskid.no_rawat')
+                // ->join('poliklinik', 'poliklinik.kd_poli', '=', 'reg_periksa.kd_poli')
+                // ->join('pasien', 'pasien.no_rkm_medis', '=', 'reg_periksa.no_rkm_medis')
+                // ->select(DB::raw("LEFT(log_taskid.no_rawat, 10) as tanggal"), 'log_taskid.no_rawat', 'reg_periksa.no_rkm_medis', 'reg_periksa.kd_poli', 'poliklinik.nm_poli', 'pasien.nm_pasien')
+                // ->whereBetween(DB::raw("LEFT(log_taskid.no_rawat, 10)"), [$start, $end])
+                // ->where ('status_daftar', 'Onsite')
+                // ->groupBy(
+                //     'tanggal',
+                //     'log_taskid.no_rawat',
+                //     'reg_periksa.no_rkm_medis',
+                //     'reg_periksa.kd_poli',
+                //     'poliklinik.nm_poli',
+                //     'pasien.nm_pasien'
+                // )
+                // ->get();
                 $dataOnsite = $this->TaskIdService->getTaskId()
                 ->join('reg_periksa', 'reg_periksa.no_rawat', '=', 'log_taskid.no_rawat')
                 ->join('poliklinik', 'poliklinik.kd_poli', '=', 'reg_periksa.kd_poli')
                 ->join('pasien', 'pasien.no_rkm_medis', '=', 'reg_periksa.no_rkm_medis')
-                ->select(DB::raw("LEFT(log_taskid.no_rawat, 10) as tanggal"), 'log_taskid.no_rawat', 'reg_periksa.no_rkm_medis', 'reg_periksa.kd_poli', 'poliklinik.nm_poli', 'pasien.nm_pasien')
+                ->select(
+                    DB::raw("LEFT(log_taskid.no_rawat, 10) as tanggal"),
+                    'log_taskid.no_rawat',
+                    'reg_periksa.no_rkm_medis',
+                    'reg_periksa.kd_poli',
+                    'poliklinik.nm_poli',
+                    'pasien.nm_pasien',
+                    DB::raw("
+                        CASE 
+                            WHEN EXISTS (
+                                SELECT 1 FROM log_taskid t
+                                WHERE t.no_rawat = log_taskid.no_rawat
+                                    AND (
+                                        -- Task 0 hanya boleh 200 atau 208
+                                        (t.task_id = '0' AND t.status NOT IN ('200','208'))
+                                        -- Task 1–7 wajib 200
+                                        OR (t.task_id IN ('1','2','3','4','5','6','7') AND t.status <> '200')
+                                    )
+                            )
+                            -- Tambahan: warning kalau tidak ada task 3,4,5
+                            OR NOT EXISTS (
+                                SELECT 1 FROM log_taskid t 
+                                WHERE t.no_rawat = log_taskid.no_rawat AND t.task_id = '3'
+                            )
+                            OR NOT EXISTS (
+                                SELECT 1 FROM log_taskid t 
+                                WHERE t.no_rawat = log_taskid.no_rawat AND t.task_id = '4'
+                            )
+                            OR NOT EXISTS (
+                                SELECT 1 FROM log_taskid t 
+                                WHERE t.no_rawat = log_taskid.no_rawat AND t.task_id = '5'
+                            )
+                            THEN 'Warning'
+                            ELSE 'Success'
+                        END as status
+                    ")
+                )
                 ->whereBetween(DB::raw("LEFT(log_taskid.no_rawat, 10)"), [$start, $end])
-                ->where ('status_daftar', 'Onsite')
+                ->where('status_daftar', 'Onsite')
                 ->groupBy(
                     'tanggal',
                     'log_taskid.no_rawat',
@@ -439,6 +495,7 @@ class taskIdController extends Controller
                     'pasien.nm_pasien'
                 )
                 ->get();
+
             }else{
                  // Belum Terkirim   
                 $dataOnsite = DB::connection('mysql_khanza')
@@ -488,7 +545,37 @@ class taskIdController extends Controller
                 ->join('reg_periksa', 'reg_periksa.no_rawat', '=', 'log_taskid.no_rawat')
                 ->join('poliklinik', 'poliklinik.kd_poli', '=', 'reg_periksa.kd_poli')
                 ->join('pasien', 'pasien.no_rkm_medis', '=', 'reg_periksa.no_rkm_medis')
-                ->select(DB::raw("LEFT(log_taskid.no_rawat, 10) as tanggal"), 'log_taskid.no_rawat', 'reg_periksa.no_rkm_medis', 'reg_periksa.kd_poli', 'poliklinik.nm_poli', 'pasien.nm_pasien')
+                ->select(DB::raw("LEFT(log_taskid.no_rawat, 10) as tanggal"), 'log_taskid.no_rawat', 'reg_periksa.no_rkm_medis', 'reg_periksa.kd_poli', 'poliklinik.nm_poli', 'pasien.nm_pasien',
+                 DB::raw("
+                        CASE 
+                            WHEN EXISTS (
+                                SELECT 1 FROM log_taskid t
+                                WHERE t.no_rawat = log_taskid.no_rawat
+                                    AND (
+                                        -- Task 0 hanya boleh 200 atau 208
+                                        (t.task_id = '0' AND t.status NOT IN ('200','208'))
+                                        -- Task 1–7 wajib 200
+                                        OR (t.task_id IN ('1','2','3','4','5','6','7') AND t.status <> '200')
+                                    )
+                            )
+                            -- Tambahan: warning kalau tidak ada task 3,4,5
+                            OR NOT EXISTS (
+                                SELECT 1 FROM log_taskid t 
+                                WHERE t.no_rawat = log_taskid.no_rawat AND t.task_id = '3'
+                            )
+                            OR NOT EXISTS (
+                                SELECT 1 FROM log_taskid t 
+                                WHERE t.no_rawat = log_taskid.no_rawat AND t.task_id = '4'
+                            )
+                            OR NOT EXISTS (
+                                SELECT 1 FROM log_taskid t 
+                                WHERE t.no_rawat = log_taskid.no_rawat AND t.task_id = '5'
+                            )
+                            THEN 'Warning'
+                            ELSE 'Success'
+                        END as status
+                    ")
+                    )
                 ->whereBetween(DB::raw("LEFT(log_taskid.no_rawat, 10)"), [$start, $end])
                 ->where ('status_daftar', 'MJKN')
                 ->groupBy(
@@ -505,9 +592,11 @@ class taskIdController extends Controller
                 $dataMjkn = DB::connection('mysql_khanza')
                 ->table('reg_periksa as rp')
                 ->select('rp.no_rawat', 'rp.no_rkm_medis', 'rp.kd_poli', 'poliklinik.nm_poli', 'pasien.nm_pasien')
+                ->join('referensi_mobilejkn_bpjs as jkn', 'rp.no_rawat', '=', 'jkn.no_rawat')
                 ->join('poliklinik', 'poliklinik.kd_poli', '=', 'rp.kd_poli')
                 ->join('pasien', 'pasien.no_rkm_medis', '=', 'rp.no_rkm_medis')
                 ->whereBetween(DB::raw("rp.tgl_registrasi"), [$startReg, $endReg])
+                ->where('jkn.status', '!=', 'batal')
                 ->whereNotIn('rp.no_rawat', function($query) {
                 $query->select('no_rawat')
                     ->from('log_taskid');
@@ -528,6 +617,26 @@ class taskIdController extends Controller
                     return '<button class="btn btn-sm btn-primary" onclick="detailOnsite(\'' . $row->no_rawat . '\')">Detail</button>';
                 })
                 ->rawColumns(['action'])
+                ->make(true);
+    }
+
+    public function logTaskId(Request $request){
+        $noRawat = $request->no_rawat;
+        $data = [];
+        $dataLog = $this->TaskIdService->getLogTaskIdRw($noRawat);
+
+        foreach($dataLog as $d){
+            $data[] = [
+                'no_rawat' => $d->no_rawat,
+                'task_id' => $d->task_id,
+                'status' => $d->status,
+                'log' => $d->log
+            ];
+        }
+        Log::info($data);
+
+        return DataTables::of($data)
+                ->addIndexColumn() // ini biar keluar DT_RowIndex
                 ->make(true);
     }
 
