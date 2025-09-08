@@ -38,6 +38,10 @@
                             name: 'nm_poli'
                         },
                         {
+                            data: 'png_jawab',
+                            name: 'png_jawab'
+                        },
+                        {
                             data: 'status',
                             name: 'status',
                             render: function(data, type, row) {
@@ -98,6 +102,10 @@
                         {
                             data: 'nm_poli',
                             name: 'nm_poli'
+                        },
+                        {
+                            data: 'png_jawab',
+                            name: 'png_jawab'
                         },
                         {
                             data: 'action',

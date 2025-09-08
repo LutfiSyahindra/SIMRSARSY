@@ -40,6 +40,7 @@
                                         <th>No Rawat</th>
                                         <th>Nama</th>
                                         <th>Poli</th>
+                                        <th>Cara Bayar</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -58,6 +59,7 @@
                                         <th>No Rawat</th>
                                         <th>Nama</th>
                                         <th>Poli</th>
+                                        <th>Cara Bayar</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
