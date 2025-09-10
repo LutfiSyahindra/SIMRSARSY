@@ -61,14 +61,31 @@
                                     return data;
                                 }
                             }
-                        }, {
+                        },
+                        {
                             data: 'action',
                             orderable: false,
                             searchable: false
                         }
-                    ]
+                    ],
+                    initComplete: function() {
+                        // 🔽 Tambahkan input filter di tiap header kolom
+                        this.api().columns([1, 2, 3, 4, 5]).every(function() {
+                            var column = this;
+                            var input = $(
+                                    '<input type="text" class="form-control form-control-sm" placeholder="Cari..." />'
+                                )
+                                .appendTo($(column.header()).empty()) // taruh di header
+                                .on('keyup change clear', function() {
+                                    if (column.search() !== this.value) {
+                                        column.search(this.value).draw();
+                                    }
+                                });
+                        });
+                    }
                 });
             }
+
 
             // Inisialisasi DataTable untuk tab Terkirim
             if ($.fn.DataTable.isDataTable('#TaskIdOnsiteBelumTable')) {
@@ -112,7 +129,7 @@
                             orderable: false,
                             searchable: false
                         }
-                    ]
+                    ],
                 });
             }
         }
@@ -178,7 +195,22 @@
                             orderable: false,
                             searchable: false
                         }
-                    ]
+                    ],
+                    initComplete: function() {
+                        // 🔽 Tambahkan input filter di tiap header kolom
+                        this.api().columns([1, 2, 3, 4, 5]).every(function() {
+                            var column = this;
+                            var input = $(
+                                    '<input type="text" class="form-control form-control-sm" placeholder="Cari..." />'
+                                )
+                                .appendTo($(column.header()).empty()) // taruh di header
+                                .on('keyup change clear', function() {
+                                    if (column.search() !== this.value) {
+                                        column.search(this.value).draw();
+                                    }
+                                });
+                        });
+                    }
                 });
             }
 
