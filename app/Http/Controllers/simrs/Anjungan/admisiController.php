@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\simrs\Anjungan;
 
+use App\Events\AdmisiAnjunganEvent;
 use App\Http\Controllers\Controller;
 use App\Services\Anjungan\admisiService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class admisiController extends Controller
 {
@@ -21,13 +23,37 @@ class admisiController extends Controller
     public function generateAntrianAdmisi()
     {
         try {
-            $nomorAntrian = $this->admisiService->generateNomorAntrian();
+            // Ambil model antrian penuh
+            $antrian = $this->admisiService->generateNomorAntrian();
 
+            // Log info dengan format array (aman, tidak kehilangan object)
+            Log::info('Nomor Antrian Admisi baru dibuat', [
+                'id' => $antrian->id,
+                'no_antrian' => $antrian->no_antrian,
+                'tanggal' => $antrian->tanggal,
+                'status_panggil' => $antrian->status_panggil,
+                'loket' => $antrian->loket,
+            ]);
+
+            // Kirim model ke event agar broadcastWith() bisa akses $this->antrian->id
+            event(new AdmisiAnjunganEvent($antrian));
+
+            // Return response JSON lengkap
             return response()->json([
                 'status' => 'success',
-                'nomor_antrian' => $nomorAntrian
+                'nomor_antrian' => [
+                    'id' => $antrian->id,
+                    'no_antrian' => $antrian->no_antrian,
+                    'tanggal' => $antrian->tanggal,
+                    'status_panggil' => $antrian->status_panggil,
+                    'loket' => $antrian->loket,
+                ]
             ]);
         } catch (\Exception $e) {
+            Log::error('Gagal membuat nomor antrian admisi', [
+                'error' => $e->getMessage(),
+            ]);
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Gagal mengambil nomor antrian',
@@ -35,6 +61,7 @@ class admisiController extends Controller
             ], 500);
         }
     }
+
 
     public function cetakAntrian($nomor)
     {

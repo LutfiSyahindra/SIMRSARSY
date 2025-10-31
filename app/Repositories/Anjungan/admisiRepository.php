@@ -26,12 +26,14 @@ class AdmisiRepository
         }
 
         // Simpan nomor antrian baru ke database
-        AdmisiModel::create([
+        $antrian = AdmisiModel::create([
             'no_antrian' => $nomorAntrian,
             'tanggal' => $tanggalHariIni,
+            'status_panggil' => 'Belum',
+            'loket' => null,
         ]);
 
-        return $nomorAntrian;
+        return $antrian;
     }
 
 }

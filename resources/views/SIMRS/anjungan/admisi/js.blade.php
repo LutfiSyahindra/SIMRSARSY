@@ -2,32 +2,37 @@
     $(document).ready(function() {
         $("#ambilNomorAdmisi").click(function() {
             $.ajax({
-                url: "{{ route("anjungan.admisi.generateNoAntrian") }}",
+                url: '{{ route("anjungan.admisi.generateNoAntrian") }}',
                 type: "POST",
                 data: {
-                    _token: "{{ csrf_token() }}"
+                    _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
+                    console.log('RESP', response);
+
                     if (response.status === "success") {
+                        // Ambil nilai nomor dengan fallback
+                        var nomorObj = response.nomor_antrian || {};
+                        var nomor = nomorObj.no_antrian ?? nomorObj.nomor_antrian ??
+                            nomorObj;
+                        // penjelasan: kebijakan fallback jika key berbeda
+
                         Swal.fire({
                             title: "Nomor Antrian Anda",
-                            text: "Nomor: " + response.nomor_antrian,
+                            text: "Nomor: " + nomor,
                             icon: "success"
                         }).then(() => {
-                            // Tutup modal (pastikan ID sesuai dengan modal yang digunakan)
                             $("#exampleModal").modal("hide");
 
-                            // Buka halaman cetak di tab baru
+                            // Pastikan urlCetak gunakan nilai, bukan objek
                             let urlCetak =
-                                "{{ url("simrs/anjungan/admisi/cetakAntrian") }}/" +
-                                response.nomor_antrian;
+                                '{{ url("simrs/anjungan/admisi/cetakAntrian") }}/' +
+                                nomor;
                             let newWindow = window.open(urlCetak, "_blank");
 
                             if (newWindow) {
-                                // Jalankan cetakan pertama
                                 newWindow.print();
 
-                                // Setelah cetakan pertama selesai, muncul opsi untuk cetakan kedua
                                 newWindow.onafterprint = function() {
                                     Swal.fire({
                                         title: "Cetak Ulang?",
@@ -38,18 +43,15 @@
                                         cancelButtonText: "Tidak"
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            newWindow
-                                                .print(); // Cetak kedua kalinya
+                                            newWindow.print();
                                         } else {
-                                            newWindow
-                                                .close(); // Tutup jika tidak ingin mencetak lagi
+                                            newWindow.close();
                                         }
                                     });
                                 };
                             } else {
                                 alert(
-                                    "Popup diblokir! Izinkan pop-up untuk cetak otomatis."
-                                );
+                                    "Popup diblokir! Izinkan pop-up untuk cetak otomatis.");
                             }
                         });
                     } else {
@@ -61,6 +63,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
+                    console.error(xhr, status, error);
                     Swal.fire({
                         title: "Terjadi Kesalahan",
                         text: "Coba lagi nanti",

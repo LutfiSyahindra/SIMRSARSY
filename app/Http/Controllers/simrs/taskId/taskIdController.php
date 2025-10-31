@@ -69,6 +69,16 @@ class taskIdController extends Controller
             ->count();
         
         //Jkn Belum
+        // $JKNbelumTerkirim = DB::connection('mysql_khanza')
+        //     ->table('reg_periksa as rp')
+        //     ->join('referensi_mobilejkn_bpjs as jkn', 'rp.no_rawat', '=', 'jkn.no_rawat')
+        //     ->whereBetween('rp.tgl_registrasi', [$startReg, $endReg])
+        //     ->where('jkn.status', '!=', 'batal')
+        //     ->whereNotIn('rp.no_rawat', function($query) {
+        //         $query->select('no_rawat')->from('log_taskid');
+        //     })
+        //     ->distinct()
+        //     ->count();
         $JKNbelumTerkirim = DB::connection('mysql_khanza')
             ->table('reg_periksa as rp')
             ->join('referensi_mobilejkn_bpjs as jkn', 'rp.no_rawat', '=', 'jkn.no_rawat')
@@ -77,8 +87,8 @@ class taskIdController extends Controller
             ->whereNotIn('rp.no_rawat', function($query) {
                 $query->select('no_rawat')->from('log_taskid');
             })
-            ->distinct()
-            ->count();
+            ->count(DB::raw('DISTINCT rp.no_rawat'));
+            Log::info("jknBelum:".$JKNbelumTerkirim);
 
 
         // Hitung total rata-rata waktu per no_rawat (taskid terkecil > 0 → taskid terbesar > 0)

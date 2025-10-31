@@ -55,23 +55,6 @@
                 <h6>Setting</h6>
             </li>
 
-            {{-- Master Data --}}
-            <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#masterData" aria-expanded="false" aria-controls="masterData"
-                    class="side-nav-link">
-                    <i class="ri-database-2-line"></i> <!-- icon diganti jadi surat -->
-                    <span>Master Data SDI</span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="masterData">
-                    <ul class="side-nav-second-level">
-                        <li>
-                            <a href="/simrs/surat/kategori/index">Kategori Surat</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-
             {{-- Users --}}
             @can("SIMRS.USERS")
                 <li class="side-nav-item">
@@ -145,6 +128,9 @@
                                 <a href="{{ route("display.khanza.kasir") }}">Kasir KHANZA</a>
                             </li>
                         @endcan
+                        <li>
+                            <a href="{{ route("display.admisi") }}">Admisi</a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -174,6 +160,9 @@
                                 <a href="{{ route("petugasPanggil.kasir.kasirPanggil") }}">Kasir</a>
                             </li>
                         @endcan
+                        <li>
+                            <a href="{{ route("petugasPanggil.admisi.admisiPanggil") }}">Admisi</a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -228,50 +217,6 @@
                         <i class="ri-task-fill"></i>
                         <span>Task ID</span>
                     </a>
-                </li>
-            @endcan
-
-            @can("SIMRS.SDI")
-                <li class="side-nav-title mt-1">
-                    <h6>SDI</h6>
-                </li>
-
-                <li class="side-nav-item">
-                    <a data-bs-toggle="collapse" href="#sdi" aria-expanded="false" aria-controls="sdi"
-                        class="side-nav-link">
-                        <i class="ri-file-text-line"></i> <!-- icon diganti jadi surat -->
-                        <span>Disposisi</span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse" id="sdi">
-                        <ul class="side-nav-second-level">
-                            <li>
-                                <a href="/simrs/khususIt/index">Disposisi</a>
-                            </li>
-                            <li>
-                                <a href="/simrs/khususIt/index">Riwayat Disposisi</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="side-nav-item">
-                    <a data-bs-toggle="collapse" href="#surat" aria-expanded="false" aria-controls="surat"
-                        class="side-nav-link">
-                        <i class="ri-mail-line"></i> <!-- icon diganti jadi surat -->
-                        <span>Surat</span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse" id="surat">
-                        <ul class="side-nav-second-level">
-                            <li>
-                                <a href="/simrs/surat/masuk/index">Surat Masuk</a>
-                            </li>
-                            <li>
-                                <a href="/simrs/khususIt/index">Surat Keluar</a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
             @endcan
 

@@ -487,8 +487,6 @@
         }
     });
 
-
-
     document.addEventListener('DOMContentLoaded', function() {
         $('#taskIdDateRange').daterangepicker({
             startDate: moment(),
