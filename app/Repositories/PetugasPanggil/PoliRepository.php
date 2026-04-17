@@ -63,4 +63,25 @@ class PoliRepository
         ->cursor();
     }
 
+    public function getDataPasienIgd()
+    {
+        return pasienPoliModel::join('poliklinik', 'reg_periksa.kd_poli', '=', 'poliklinik.kd_poli')
+        ->join('pasien', 'reg_periksa.no_rkm_medis', '=', 'pasien.no_rkm_medis')
+        ->join('dokter', 'reg_periksa.kd_dokter', '=', 'dokter.kd_dokter')
+        ->select(
+            'reg_periksa.no_rawat',
+            'reg_periksa.no_reg',
+            'pasien.nm_pasien',
+            'poliklinik.nm_poli',
+            'pasien.tgl_lahir',
+            'pasien.alamat',
+            'pasien.jk',
+            'pasien.no_rkm_medis',
+            'dokter.nm_dokter'
+        )
+        ->where('reg_periksa.kd_poli', 'IGDK') // 🔴 khusus IGD
+        ->whereDate('reg_periksa.tgl_registrasi', Carbon::today())
+        ->cursor();
+    }
+
 }

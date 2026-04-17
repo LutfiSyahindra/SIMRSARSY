@@ -37,4 +37,9 @@ class PoliService
         return $this->poliRepository->getDataPasienRanap($tgl1, $tgl2);
     }
 
+    public function getDataPasienIgd()
+    {
+        return $this->poliRepository->getDataPasienIgd();
+    }
+
 }

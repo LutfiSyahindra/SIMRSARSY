@@ -5,8 +5,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\simrs\Anjungan\admisiController;
 use App\Http\Controllers\simrs\Anjungan\AnjunganController;
 use App\Http\Controllers\simrs\Anjungan\antrianFarmasiController;
+use App\Http\Controllers\simrs\Anjungan\Jkn\KontrolPoliController;
+use App\Http\Controllers\simrs\Anjungan\jkn\RujukanBaruController;
+use App\Http\Controllers\simrs\Anjungan\Jkn\RujukInternalController;
+use App\Http\Controllers\simrs\Anjungan\Jkn\TokenController;
 use App\Http\Controllers\simrs\display\apotekwsController;
 use App\Http\Controllers\simrs\display\DisplayAdmisiController;
+use App\Http\Controllers\simrs\display\IgdController;
 use App\Http\Controllers\simrs\display\KasirController;
 use App\Http\Controllers\simrs\display\KasirKhnzaController;
 use App\Http\Controllers\simrs\display\PippController;
@@ -15,6 +20,7 @@ use App\Http\Controllers\simrs\display\PoliWsController;
 use App\Http\Controllers\simrs\It\ItController;
 use App\Http\Controllers\simrs\Loket\Admisi\LoketAdmisiController;
 use App\Http\Controllers\simrs\PetugasPanggil\admisiPanggilController;
+use App\Http\Controllers\simrs\PetugasPanggil\igdPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\kasirPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\pippPanggilController;
 use App\Http\Controllers\simrs\PetugasPanggil\poliPanggilController;
@@ -51,6 +57,49 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
+
+    Route::prefix('jkn')->group(function () {
+        Route::get('/cek-env-jkn', function () {
+            return [
+                'username' => env('BPJS_ANTROL_USERNAME'),
+                'password' => env('BPJS_ANTROL_PASSWORD'),
+                'antrol_url' => env('BPJS_BASE_URL_ANTROL'),
+                'tes' => env('APP_URL'),
+                'anjungan_url' => env('ANJUNGAN_BASE_URL'),
+                'anjungan_token_url' => env('ANJUNGAN_TOKEN_URL'),
+                'base_url_vclaim' => env('BPJS_BASE_URL_VCLAIM'),
+            ];
+        });
+
+        // ======================= Rujukan Baru =======================
+        Route::post('/checkin', [RujukanBaruController::class, 'checkin']);
+        Route::post('/sendFinger', [RujukanBaruController::class, 'sendFinger']);
+        Route::post('/rujukan', [RujukanBaruController::class, 'getRujukan']);
+        Route::post('/sep', [RujukanBaruController::class, 'createSep']);
+        Route::get('/vclaim/rujukan/pcare/noka', [RujukanBaruController::class, 'rujukanPcareByNoka']);
+        Route::get('/vclaim/rujukan/rs/noka', [RujukanBaruController::class, 'rujukanRsByNoka']);
+        Route::get('/vclaim/rujukan/noka', [RujukanBaruController::class, 'rujukanByNoka']);
+        Route::post('/addAntrean', [RujukanBaruController::class, 'addAntrean']);
+        Route::post('/generatePdf', [RujukanBaruController::class, 'generatePdf']);
+        Route::get('/bukti-register', [RujukanBaruController::class, 'buktiRegister']);
+
+        // ======================= Kontrol Poli =======================
+        Route::post('/checkinKontrol', [KontrolPoliController::class, 'checkinKontrol']);
+        Route::post('/sendFingerKontrol', [KontrolPoliController::class, 'sendFingerKontrol']);
+        Route::get('/vclaim/kontrol', [KontrolPoliController::class, 'suratKontrol']);
+        Route::post('/sepKontrol', [KontrolPoliController::class, 'createSepKontrol']);
+
+        // ======================= Rujuk Internal =======================
+        Route::post('/checkinRujukInternal', [RujukInternalController::class, 'checkinInternal']);
+        Route::post('/sendFingerRujukInternal', [RujukInternalController::class, 'sendFingerInternal']);
+        Route::get('/vclaim/rujukInternal', [RujukInternalController::class, 'suratKontrolInternal']);
+        Route::post('/sepRujukInternal', [RujukInternalController::class, 'createSepInternal']);
+        
+
+
+
+    });
+
     Route::prefix('simrs')->group(function () {
     
     // --- Loket ---
@@ -86,6 +135,9 @@ Route::middleware('auth')->group(function () {
         // Display Admisi
         Route::get('/display/admisi', [DisplayAdmisiController::class, 'index'])->name('display.admisi');
 
+        // Display Admisi
+        Route::get('/display/igd', [IgdController::class, 'index'])->name('display.igd');
+
     // --- Petugas Panggil --- 
         // petugasPanggilPoli
         Route::get('/petugasPanggil/poliPanggil', [poliPanggilController::class, 'index'])->name('petugasPanggil.poliPanggil');
@@ -108,6 +160,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/petugasPanggil/admisi/admisiPanggil', [admisiPanggilController::class, 'index'])->name('petugasPanggil.admisi.admisiPanggil');
         Route::get('/petugasPanggil/admisi/admisiPanggil/dataPasien', [admisiPanggilController::class, 'getDataPasien'])->name('petugasPanggil.admisi.admisiPanggil.dataPasien');
         Route::post('/petugasPanggil/admisi/admisiPanggil/panggilAdmisi', [admisiPanggilController::class, 'panggilAdmisi'])->name('petugasPanggil.admisi.admisiPanggil.panggilAdmisi');
+
+        // petugasPanggiligd
+        Route::get('/petugasPanggil/igd/igdPanggil', [igdPanggilController::class, 'index'])->name('petugasPanggil.igd.igdPanggil');
+        Route::get('/petugasPanggil/igd/dataPasienIgd', [igdPanggilController::class, 'getDataPasienIgd'])->name('petugasPanggil.igd.getDataPasienIgd');
+        Route::post('/petugasPanggil/igd/panggilPasienIgd', [igdPanggilController::class, 'panggilIgd'])->name('petugasPanggil.igd.panggilIgd');
 
     // --- Auth ---
         // Users

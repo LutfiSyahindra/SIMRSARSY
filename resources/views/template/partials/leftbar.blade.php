@@ -131,6 +131,9 @@
                         <li>
                             <a href="{{ route("display.admisi") }}">Admisi</a>
                         </li>
+                        <li>
+                            <a href="{{ route("display.igd") }}">IGD</a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -160,8 +163,13 @@
                                 <a href="{{ route("petugasPanggil.kasir.kasirPanggil") }}">Kasir</a>
                             </li>
                         @endcan
+                        {{-- @can("SIMRS.PANGGIL.ADMISI") --}}
+                        {{-- @endcan --}}
                         <li>
                             <a href="{{ route("petugasPanggil.admisi.admisiPanggil") }}">Admisi</a>
+                        </li>
+                        <li>
+                            <a href="{{ route("petugasPanggil.igd.igdPanggil") }}">IGD</a>
                         </li>
                     </ul>
                 </div>
